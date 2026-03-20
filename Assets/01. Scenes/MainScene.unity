@@ -1381,8 +1381,6 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  normalEnemyConfig: {fileID: 11400000, guid: 77e4125ae312d754a895bf728371f8c5, type: 2}
-  commanderConfig: {fileID: 11400000, guid: 529a7f3092cd28347bd53284cd4b4cec, type: 2}
   stageConfig: {fileID: 11400000, guid: 1ce02f5552385c249917100d0f2dad3d, type: 2}
   enemyViewPrefab: {fileID: 6666642329377429992, guid: 126a44aec470a3a43bd9f217516b2629, type: 3}
   commanderViewPrefab: {fileID: 1220689652323866378, guid: 3aaedc53e12c960439ca5c2a9392a7cc, type: 3}
