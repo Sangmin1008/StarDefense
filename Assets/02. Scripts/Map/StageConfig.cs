@@ -5,5 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "StageConfig", menuName = "ScriptableObject/StageConfig")]
 public class StageConfig : ScriptableObject
 {
+    [Header("Commander Settings")]
+    public CommanderConfig CommanderConfig;
+    public Vector3 CommanderPosition;
+    
+    [Header("Wave Settings")]
     public List<WaveConfig> Waves;
 }

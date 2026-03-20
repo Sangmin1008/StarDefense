@@ -6,7 +6,6 @@ public class InGameLifetimeScope : LifetimeScope
 {
     [Header("Configurations")]
     [SerializeField] private EnemyConfig normalEnemyConfig;
-    [SerializeField] private CommanderConfig commanderConfig;
     [SerializeField] private StageConfig stageConfig;
 
     [Header("Prefabs")]
@@ -17,7 +16,6 @@ public class InGameLifetimeScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         builder.RegisterInstance(normalEnemyConfig);
-        builder.RegisterInstance(commanderConfig);
         builder.RegisterInstance(stageConfig);
         
         builder.RegisterInstance(enemyViewPrefab);
@@ -25,9 +23,9 @@ public class InGameLifetimeScope : LifetimeScope
         
         builder.RegisterEntryPoint<WavePresenter>();
         builder.Register<WaveModel>(Lifetime.Scoped);
-        builder.Register<CommanderModel>(Lifetime.Scoped).WithParameter(commanderConfig);
+        builder.Register<CommanderModel>(Lifetime.Scoped).WithParameter(stageConfig.CommanderConfig);
         builder.Register<EnemyRegistry>(Lifetime.Scoped);
         builder.RegisterEntryPoint<EnemySpawner>().AsSelf();
-        builder.RegisterEntryPoint<GameTest>();
+        builder.RegisterEntryPoint<StageInitializer>();
     }
 }
