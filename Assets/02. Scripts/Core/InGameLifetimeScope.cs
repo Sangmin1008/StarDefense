@@ -5,7 +5,6 @@ using VContainer.Unity;
 public class InGameLifetimeScope : LifetimeScope
 {
     [Header("Configurations")]
-    [SerializeField] private EnemyConfig normalEnemyConfig;
     [SerializeField] private StageConfig stageConfig;
 
     [Header("Prefabs")]
@@ -15,7 +14,6 @@ public class InGameLifetimeScope : LifetimeScope
     
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterInstance(normalEnemyConfig);
         builder.RegisterInstance(stageConfig);
         
         builder.RegisterInstance(enemyViewPrefab);
