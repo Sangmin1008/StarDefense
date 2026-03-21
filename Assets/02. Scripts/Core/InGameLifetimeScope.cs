@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -6,6 +7,7 @@ public class InGameLifetimeScope : LifetimeScope
 {
     [Header("Configurations")]
     [SerializeField] private StageConfig stageConfig;
+    [SerializeField] private List<HeroConfig> heroConfigs;
 
     [Header("Prefabs")]
     [SerializeField] private EnemyView enemyViewPrefab;
@@ -21,6 +23,8 @@ public class InGameLifetimeScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         builder.RegisterInstance(stageConfig);
+        builder.RegisterInstance(heroConfigs);
+        
         builder.RegisterInstance(enemyViewPrefab);
         builder.RegisterInstance(commanderViewPrefab);
         
@@ -28,6 +32,7 @@ public class InGameLifetimeScope : LifetimeScope
         builder.Register<CommanderModel>(Lifetime.Scoped).WithParameter(stageConfig.CommanderConfig);
         builder.Register<EnemyRegistry>(Lifetime.Scoped);
         builder.Register<GridManager>(Lifetime.Scoped);
+        builder.Register<HeroManager>(Lifetime.Scoped);
         builder.RegisterEntryPoint<WavePresenter>();
         builder.RegisterEntryPoint<EnemySpawner>().AsSelf();
         builder.RegisterEntryPoint<StageInitializer>();

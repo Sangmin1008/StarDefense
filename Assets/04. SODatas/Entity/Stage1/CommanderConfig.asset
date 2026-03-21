@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: CommanderConfig
   m_EditorClassIdentifier: 
   MaxHealth: 200
-  AttackPower: 0
+  AttackPower: 100
   AttackRange: 4
   AttackCooldown: 1

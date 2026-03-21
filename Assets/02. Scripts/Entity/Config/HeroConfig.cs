@@ -13,8 +13,12 @@ public enum HeroGrade
 [CreateAssetMenu(fileName = "HeroConfig", menuName = "ScriptableObject/HeroConfig")]
 public class HeroConfig : ScriptableObject
 {
+    [Header("Settings")]
     public string HeroName;
     public HeroGrade Grade;
+    
+    [Header("Prefabs")]
+    public HeroView Prefab;
 
     [Header("Attack Settings")]
     public int AttackPower;
