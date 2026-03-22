@@ -10,15 +10,17 @@ public class CommanderPresenter : IInitializable, IDisposable
     private readonly CommanderModel _model;
     private readonly CommanderView _view;
     private readonly EnemyRegistry _enemyRegistry;
+    private readonly ProjectileManager _projectileManager;
     
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
     private IDisposable _attackTimerDisposable;
     
-    public CommanderPresenter(CommanderModel model, CommanderView view, EnemyRegistry enemyRegistry)
+    public CommanderPresenter(CommanderModel model, CommanderView view, EnemyRegistry enemyRegistry, ProjectileManager projectileManager)
     {
         _model = model;
         _view = view;
         _enemyRegistry = enemyRegistry;
+        _projectileManager = projectileManager;
     }
     
     public void Initialize()
@@ -51,8 +53,18 @@ public class CommanderPresenter : IInitializable, IDisposable
     {
         if (_enemyRegistry.TryGetClosestEnemy(_view.transform.position, _model.Config.AttackRange, out EnemyModel targetModel, out Vector3 targetPosition))
         {
-            _view.LookAtTarget(targetPosition);
-            targetModel.TakeDamage(_model.Config.AttackPower);
+            if (_enemyRegistry.TryGetView(targetModel, out EnemyView targetView))
+            {
+                _projectileManager.SpawnProjectile(
+                    _model.Config.ProjectilePrefab, 
+                    _view.transform.position, 
+                    _model.Config.AttackPower,
+                    _model.Config.ProjectileSpeed,
+                    _model.Config.ProjectileMaxDistance,
+                    targetModel,
+                    targetView
+                );
+            }
         }
     }
     
