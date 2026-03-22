@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WaveConfig 2
   m_EditorClassIdentifier: 
   EnemyType: {fileID: 11400000, guid: 77e4125ae312d754a895bf728371f8c5, type: 2}
-  SpawnCount: 10
-  SpawnInterval: 1
-  DelayTimeBeforeWave: 3
+  SpawnCount: 50
+  SpawnInterval: 0.1
+  DelayTimeBeforeWave: 10
   PathData: {fileID: 11400000, guid: 74424e4990115cb449fb0513d35e8dcf, type: 2}
