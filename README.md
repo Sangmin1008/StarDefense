@@ -8,7 +8,7 @@ StarDefense는 Unity 기반의 클래식 타워 디펜스 게임입니다.
 
 ## 주요 기술 스택 (Tech Stack)
 
-* **Game Engine:** Unity 3D (2D 환경 설정)
+* **Game Engine:** Unity 2D - 2022.3.62f3
 * **Architecture:** MVP (Model-View-Presenter)
 * **Dependency Injection:** VContainer
 * **Reactive & Async:** UniRx, UniTask
