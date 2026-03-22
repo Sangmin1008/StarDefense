@@ -52,10 +52,13 @@ public class HeroManager
     public bool TryUpgradeHero(HeroPresenter targetHero)
     {
         HeroGrade currentGrade = targetHero.Model.Config.Grade;
+        HeroType currentType = targetHero.Model.Config.Type;
+        
         if (currentGrade == HeroGrade.Legendary) return false;
         
-        HeroPresenter materialHero = _activeHeroes.FirstOrDefault(h => h.Model.Config.Grade == currentGrade && h != targetHero);
-        if (materialHero == null) return false;
+        HeroPresenter otherHero = _activeHeroes.FirstOrDefault(h => h.Model.Config.Grade == currentGrade &&
+                                                                    h.Model.Config.Type == currentType && h != targetHero);
+        if (otherHero == null) return false;
 
         if (!_coinModel.TrySpendCoin(HeroCostHelper.GetCost(targetHero.Model.Config.Grade))) return false;
         
@@ -63,10 +66,12 @@ public class HeroManager
         Vector3 upgradeWorldPos = targetHero.View.transform.position;
         
         RemoveHero(targetHero);
-        RemoveHero(materialHero);
+        RemoveHero(otherHero);
         
         HeroGrade nextGrade = currentGrade + 1;
-        List<HeroConfig> availableHeroes = _heroDatabase.Where(h => h.Grade == nextGrade).ToList();
+        List<HeroConfig> availableHeroes = _heroDatabase.Where(h => 
+            h.Grade == nextGrade && 
+            h.Type == currentType).ToList();
         
         if (availableHeroes.Count > 0)
         {

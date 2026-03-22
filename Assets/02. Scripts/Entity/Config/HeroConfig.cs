@@ -10,12 +10,19 @@ public enum HeroGrade
     Legendary = 3
 }
 
+public enum HeroType
+{
+    TypaA,
+    TypeB,
+}
+
 [CreateAssetMenu(fileName = "HeroConfig", menuName = "ScriptableObject/HeroConfig")]
 public class HeroConfig : ScriptableObject
 {
     [Header("Settings")]
     public string HeroName;
     public HeroGrade Grade;
+    public HeroType Type;
     
     [Header("Prefabs")]
     public HeroView Prefab;
