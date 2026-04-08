@@ -11,10 +11,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Hero
+  - Enemy
+  - TileMap
+  - Projectile
   - 
   - 
   - 
@@ -49,4 +49,16 @@ TagManager:
     locked: 0
   - name: Layer 3
     uniqueID: 4189426099
+    locked: 0
+  - name: TileMap
+    uniqueID: 348613653
+    locked: 0
+  - name: Projectile
+    uniqueID: 2414422727
+    locked: 0
+  - name: Hero
+    uniqueID: 4097550741
+    locked: 0
+  - name: Enemy
+    uniqueID: 3534962493
     locked: 0
