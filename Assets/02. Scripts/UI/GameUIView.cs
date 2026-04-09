@@ -61,13 +61,13 @@ public class GameUIView : MonoBehaviour
     public void UpdateWaveInfo(int currentWaveIndex, int maxWaves)
     {
         if (!waveCountText) return;
-        waveCountText.text = $"Wave: {currentWaveIndex + 1} / {maxWaves}";
+        waveCountText.text = $"{currentWaveIndex + 1} / {maxWaves}";
     }
     
     public void UpdateAliveEnemies(int current, int total)
     {
         if (!aliveEnemyCountText) return;
-        aliveEnemyCountText.text = $"Enemies: {current} / {total}";
+        aliveEnemyCountText.text = $"{current} / {total}";
     }
 
     public void UpdateDelayCountdown(float secondsLeft)
