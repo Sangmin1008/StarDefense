@@ -16,8 +16,8 @@ public class InGameLifetimeScope : LifetimeScope
     [Header("UI Views")]
     [SerializeField] private GameUIView gameUIView;
     
-    [Header("Grid System")]
-    [SerializeField] private GridClickDetector gridClickDetector;
+    // [Header("Grid System")]
+    // [SerializeField] private GridClickDetector gridClickDetector;
     
     
     protected override void Configure(IContainerBuilder builder)
@@ -39,8 +39,8 @@ public class InGameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<EnemySpawner>().AsSelf();
         builder.RegisterEntryPoint<StageInitializer>();
         builder.RegisterEntryPoint<GameUIPresenter>();
-        builder.RegisterEntryPoint<GridInteractionPresenter>();
         builder.RegisterComponent(gameUIView);
-        builder.RegisterComponent(gridClickDetector);
+        // builder.RegisterEntryPoint<GridInteractionPresenter>();
+        // builder.RegisterComponent(gridClickDetector);
     }
 }

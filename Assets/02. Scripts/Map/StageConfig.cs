@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "StageConfig", menuName = "ScriptableObject/StageConfig")]
 public class StageConfig : ScriptableObject
 {
+    [Header("TileMap Settings")]
+    public GameObject TileMapPrefab;
+    
     [Header("Economy Settings")]
     public int InitialCoin;
     

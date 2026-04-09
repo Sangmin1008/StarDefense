@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1dc2339ecd0b549b744c09011029b3, type: 3}
   m_Name: StageConfig
   m_EditorClassIdentifier: 
+  TileMapPrefab: {fileID: 3493784618943124187, guid: 58b85d84c5248904ab980e20e58b26e2,
+    type: 3}
   InitialCoin: 100
   CommanderConfig: {fileID: 11400000, guid: 529a7f3092cd28347bd53284cd4b4cec, type: 2}
   CommanderPosition: {x: 1.177, y: 3.295, z: 0}
