@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d171623a56ce31d4f8350047ef7ced46, type: 3}
-  m_Name: WaveConfig 2
+  m_Name: WaveConfig 3
   m_EditorClassIdentifier: 
   EnemyType: {fileID: 11400000, guid: 77e4125ae312d754a895bf728371f8c5, type: 2}
-  SpawnCount: 50
+  SpawnCount: 70
   SpawnInterval: 0.1
-  DelayTimeBeforeWave: 10
-  PathData: {fileID: 11400000, guid: fc0538cb0c70f894d9042b80a0952814, type: 2}
+  DelayTimeBeforeWave: 3
+  PathData: {fileID: 11400000, guid: 41ae190f6b578334ebc81809bae9829a, type: 2}

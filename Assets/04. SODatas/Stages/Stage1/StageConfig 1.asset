@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f1dc2339ecd0b549b744c09011029b3, type: 3}
-  m_Name: StageConfig
+  m_Name: StageConfig 1
   m_EditorClassIdentifier: 
   TileMapPrefab: {fileID: 3493784618943124187, guid: 58b85d84c5248904ab980e20e58b26e2,
     type: 3}

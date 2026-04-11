@@ -16,4 +16,4 @@ MonoBehaviour:
   SpawnCount: 30
   SpawnInterval: 0.3
   DelayTimeBeforeWave: 10
-  PathData: {fileID: 11400000, guid: 74424e4990115cb449fb0513d35e8dcf, type: 2}
+  PathData: {fileID: 11400000, guid: fc0538cb0c70f894d9042b80a0952814, type: 2}

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f1dc2339ecd0b549b744c09011029b3, type: 3}
-  m_Name: StageConfig
+  m_Name: StageConfig 3
   m_EditorClassIdentifier: 
-  TileMapPrefab: {fileID: 3493784618943124187, guid: 58b85d84c5248904ab980e20e58b26e2,
+  TileMapPrefab: {fileID: 3493784618943124187, guid: 847584bff9d95824aa522790c55d6cc2,
     type: 3}
   InitialCoin: 100
   CommanderConfig: {fileID: 11400000, guid: 529a7f3092cd28347bd53284cd4b4cec, type: 2}
