@@ -16,12 +16,20 @@ public class InGameLifetimeScope : LifetimeScope
     [Header("UI Views")]
     [SerializeField] private GameUIView gameUIView;
     
-    // [Header("Grid System")]
-    // [SerializeField] private GridClickDetector gridClickDetector;
-    
     
     protected override void Configure(IContainerBuilder builder)
     {
+        if (Parent != null && Parent.Container != null)
+        {
+            if (Parent.Container.TryResolve(out GameManagerModel gameManagerModel))
+            {
+                if (gameManagerModel.CurrentStageConfig != null)
+                {
+                    stageConfig = gameManagerModel.CurrentStageConfig;
+                }
+            }
+        }
+        
         builder.RegisterInstance(stageConfig);
         builder.RegisterInstance(heroConfigs);
         
