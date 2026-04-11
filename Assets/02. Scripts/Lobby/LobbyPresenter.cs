@@ -10,7 +10,6 @@ public class LobbyPresenter : IInitializable, IDisposable
 {
     private readonly LobbyView _lobbyView;
     private readonly GameManagerModel _gameManagerModel;
-    private readonly IReadOnlyList<StageConfig> _stageConfigs;
     
     private CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -18,7 +17,6 @@ public class LobbyPresenter : IInitializable, IDisposable
     {
         _lobbyView = lobbyView;
         _gameManagerModel = gameManagerModel;
-        _stageConfigs = stageConfigs;
     }
     
     public void Initialize()
@@ -26,9 +24,9 @@ public class LobbyPresenter : IInitializable, IDisposable
         _lobbyView.OnStageSelected
             .Subscribe(index =>
             {
-                if (index < 0 || index >= _stageConfigs.Count) return;
+                if (index < 0 || index >= _gameManagerModel.AllStages.Count) return;
                 
-                _gameManagerModel.CurrentStageConfig = _stageConfigs[index];
+                _gameManagerModel.CurrentStageConfig = _gameManagerModel.AllStages[index];
                 Debug.Log("씬 이동!");
                 SceneManager.LoadScene("01. Scenes/MainScene");
             })

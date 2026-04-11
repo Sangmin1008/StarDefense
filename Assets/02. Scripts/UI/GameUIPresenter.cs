@@ -70,9 +70,15 @@ public class GameUIPresenter : IInitializable, IDisposable
             {
                 Debug.Log("다음 스테이지!");
                 
-                
-
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                if (_gameManagerModel.HasNextStage())
+                {
+                    _gameManagerModel.SetNextStage();
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                }
+                else
+                {
+                    SceneManager.LoadScene("01. Scenes/LobbyScene");
+                }
             })
             .AddTo(_disposables);
 

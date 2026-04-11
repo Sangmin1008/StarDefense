@@ -48,3 +48,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  allStages:
+  - {fileID: 11400000, guid: 1ce02f5552385c249917100d0f2dad3d, type: 2}
+  - {fileID: 11400000, guid: e62543cd7f0eb9e4b8b611043d08520a, type: 2}
+  - {fileID: 11400000, guid: e0e3614fe4f65974ab6171df476203c6, type: 2}
