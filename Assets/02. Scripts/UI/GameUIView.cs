@@ -31,8 +31,12 @@ public class GameUIView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinText;
 
     [Header("Result Screens")]
-    [SerializeField] private GameObject victoryScreen;
-    [SerializeField] private GameObject defeatScreen;
+    [SerializeField] private GameObject resultScreen;
+    [SerializeField] private Button retryButton;
+    [SerializeField] private Button nextButton;
+    [SerializeField] private Button exitButton;
+    [SerializeField] private TextMeshProUGUI victoryText;
+    [SerializeField] private TextMeshProUGUI defeatText;
     
     public IObservable<Unit> OnSummonClicked => summonButton.onClick.AsObservable();
     public IObservable<Unit> OnUpgradeClicked => upgradeButton.onClick.AsObservable();
@@ -138,19 +142,31 @@ public class GameUIView : MonoBehaviour
 
     public void ShowVictoryScreen()
     {
-        if (!victoryScreen) return;
-        victoryScreen.SetActive(true);
+        if (!resultScreen) return;
+        resultScreen.SetActive(true);
+        ShowResult(true);
     }
 
     public void ShowDefeatScreen()
     {
-        if (!defeatScreen) return;
-        defeatScreen.SetActive(true);
+        if (!resultScreen) return;
+        resultScreen.SetActive(true);
+        ShowResult(false);
     }
 
     private void HideResultScreens()
     {
-        if (victoryScreen != null) victoryScreen.SetActive(false);
-        if (defeatScreen != null) defeatScreen.SetActive(false);
+        if (resultScreen != null) resultScreen.SetActive(false);
+    }
+
+    private void ShowResult(bool victory)
+    {
+        victoryText.gameObject.SetActive(victory);
+        defeatText.gameObject.SetActive(!victory);
+        
+        nextButton.gameObject.SetActive(victory);
+        retryButton.gameObject.SetActive(!victory);
+        
+        exitButton.gameObject.SetActive(true);
     }
 }
