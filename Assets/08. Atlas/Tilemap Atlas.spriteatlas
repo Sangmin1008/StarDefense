@@ -36,6 +36,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 9f8f114589864b6489859a58fbb6baf9, type: 3}
     - {fileID: 2800000, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
     - {fileID: 2800000, guid: a07735877a3bd644094331b137b71878, type: 3}
+    - {fileID: 2800000, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -263,6 +264,36 @@ SpriteAtlas:
     - a3f808298df32ae4a90435a4d26d4b16: 21300094
     - a3f808298df32ae4a90435a4d26d4b16: 21300116
     - a3f808298df32ae4a90435a4d26d4b16: 21300060
+    - dda6bbdb704d84847b38f9eced72bf59: 21300012
+    - dda6bbdb704d84847b38f9eced72bf59: -293941904
+    - dda6bbdb704d84847b38f9eced72bf59: 21300014
+    - dda6bbdb704d84847b38f9eced72bf59: 21300040
+    - dda6bbdb704d84847b38f9eced72bf59: 21300010
+    - dda6bbdb704d84847b38f9eced72bf59: 21300042
+    - dda6bbdb704d84847b38f9eced72bf59: -132900705
+    - dda6bbdb704d84847b38f9eced72bf59: 21300044
+    - dda6bbdb704d84847b38f9eced72bf59: 21300022
+    - dda6bbdb704d84847b38f9eced72bf59: 21300020
+    - dda6bbdb704d84847b38f9eced72bf59: -275658010
+    - dda6bbdb704d84847b38f9eced72bf59: 21300024
+    - dda6bbdb704d84847b38f9eced72bf59: 21300000
+    - dda6bbdb704d84847b38f9eced72bf59: 21300004
+    - dda6bbdb704d84847b38f9eced72bf59: -461411122
+    - dda6bbdb704d84847b38f9eced72bf59: 21300028
+    - dda6bbdb704d84847b38f9eced72bf59: -1076116132
+    - dda6bbdb704d84847b38f9eced72bf59: 21300002
+    - dda6bbdb704d84847b38f9eced72bf59: 21300026
+    - dda6bbdb704d84847b38f9eced72bf59: -575057542
+    - dda6bbdb704d84847b38f9eced72bf59: 21300034
+    - dda6bbdb704d84847b38f9eced72bf59: 21300036
+    - dda6bbdb704d84847b38f9eced72bf59: 21300038
+    - dda6bbdb704d84847b38f9eced72bf59: -935552555
+    - dda6bbdb704d84847b38f9eced72bf59: 21300018
+    - dda6bbdb704d84847b38f9eced72bf59: 21300032
+    - dda6bbdb704d84847b38f9eced72bf59: 21300016
+    - dda6bbdb704d84847b38f9eced72bf59: -1827870714
+    - dda6bbdb704d84847b38f9eced72bf59: 21300030
+    - dda6bbdb704d84847b38f9eced72bf59: 21300046
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300038, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
@@ -488,6 +519,36 @@ SpriteAtlas:
   - {fileID: 21300094, guid: a3f808298df32ae4a90435a4d26d4b16, type: 3}
   - {fileID: 21300116, guid: a3f808298df32ae4a90435a4d26d4b16, type: 3}
   - {fileID: 21300060, guid: a3f808298df32ae4a90435a4d26d4b16, type: 3}
+  - {fileID: 21300012, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: -293941904, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300014, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300040, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300010, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300042, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: -132900705, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300044, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300022, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300020, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: -275658010, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300024, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300000, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300004, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: -461411122, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300028, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: -1076116132, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300002, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300026, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: -575057542, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300034, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300036, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300038, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: -935552555, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300018, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300032, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300016, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: -1827870714, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300030, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
+  - {fileID: 21300046, guid: dda6bbdb704d84847b38f9eced72bf59, type: 3}
   m_PackedSpriteNamesToIndex:
   - TX Tileset Grass 10
   - TX Tileset Grass Flower 10
@@ -712,6 +773,36 @@ SpriteAtlas:
   - TX Props Pot C
   - TX Props Stone Lantern
   - TX Props Rune Pillar Broken
+  - TX Stairs L R
+  - TX Stairs W 01 U
+  - TX Stairs L M
+  - TX Stairs Broken R L
+  - TX Stairs L L
+  - TX Stairs Broken R M
+  - TX Stairs W 01 L
+  - TX Stairs Broken R R
+  - TX Stairs R M
+  - TX Stairs R L
+  - TX Stairs W 02 U
+  - TX Stairs R R
+  - TX Stairs M L
+  - TX Stairs M M
+  - TX Stairs W 02 L
+  - TX Struct Gate T1 T
+  - TX Stairs E 02 U
+  - TX Stairs M R
+  - TX Struct Gate T1 B
+  - TX Stairs E 02 L
+  - TX Stairs Broken L L
+  - TX Stairs Broken L M
+  - TX Stairs Broken L R
+  - TX Stairs E 01 L
+  - TX Struct Gate T2 B
+  - TX Stairs Broken M R
+  - TX Struct Gate T2 T
+  - TX Stairs E 01 U
+  - TX Stairs Broken M M
+  - TX Stairs Broken M L
   m_RenderDataMap: {}
   m_Tag: Tilemap Atlas
   m_IsVariant: 0

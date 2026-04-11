@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UI Atlas
+  m_Name: Lobby Atlas
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -45,39 +45,21 @@ SpriteAtlas:
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
-    - {fileID: 2800000, guid: c1b63dd4d7f26b44b9be74e0536c6429, type: 3}
-    - {fileID: 1155638775, guid: abe7a2dc8e032464c819a0fb1881dded, type: 3}
-    - {fileID: 2015921406, guid: abe7a2dc8e032464c819a0fb1881dded, type: 3}
-    - {fileID: 2800000, guid: d4fd36500f76a9649b05fc7dfb431d63, type: 3}
-    - {fileID: 2800000, guid: 661205988855c9b4d9d68d92ab8ccb18, type: 3}
+    - {fileID: 2800000, guid: d3d85de0df4bd674289d2b75b3d19c80, type: 3}
+    - {fileID: 2800000, guid: f4c644cec30a414418a21e60f4e636d5, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
-    - d4fd36500f76a9649b05fc7dfb431d63: 21300000
-    - c1b63dd4d7f26b44b9be74e0536c6429: -1272797599
-    - c1b63dd4d7f26b44b9be74e0536c6429: 1228891746
-    - 661205988855c9b4d9d68d92ab8ccb18: 1698730979
-    - 661205988855c9b4d9d68d92ab8ccb18: -1889656072
-    - abe7a2dc8e032464c819a0fb1881dded: 1155638775
-    - abe7a2dc8e032464c819a0fb1881dded: 2015921406
+    - d3d85de0df4bd674289d2b75b3d19c80: 21300000
+    - f4c644cec30a414418a21e60f4e636d5: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: d4fd36500f76a9649b05fc7dfb431d63, type: 3}
-  - {fileID: -1272797599, guid: c1b63dd4d7f26b44b9be74e0536c6429, type: 3}
-  - {fileID: 1228891746, guid: c1b63dd4d7f26b44b9be74e0536c6429, type: 3}
-  - {fileID: 1698730979, guid: 661205988855c9b4d9d68d92ab8ccb18, type: 3}
-  - {fileID: -1889656072, guid: 661205988855c9b4d9d68d92ab8ccb18, type: 3}
-  - {fileID: 1155638775, guid: abe7a2dc8e032464c819a0fb1881dded, type: 3}
-  - {fileID: 2015921406, guid: abe7a2dc8e032464c819a0fb1881dded, type: 3}
+  - {fileID: 21300000, guid: d3d85de0df4bd674289d2b75b3d19c80, type: 3}
+  - {fileID: 21300000, guid: f4c644cec30a414418a21e60f4e636d5, type: 3}
   m_PackedSpriteNamesToIndex:
-  - Panel
-  - HPBar_1
-  - HPBar_0
-  - Buttons_1
-  - Buttons_0
-  - Coin_Status_0
-  - Coin_Status_1
+  - Background
+  - Logo
   m_RenderDataMap: {}
-  m_Tag: UI Atlas
+  m_Tag: Lobby Atlas
   m_IsVariant: 0
