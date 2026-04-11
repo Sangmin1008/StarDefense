@@ -27,6 +27,7 @@ public class LobbyPresenter : IInitializable, IDisposable
                 if (index < 0 || index >= _gameManagerModel.AllStages.Count) return;
                 
                 _gameManagerModel.CurrentStageConfig = _gameManagerModel.AllStages[index];
+                _gameManagerModel.CurrentStageIndex = index;
                 Debug.Log("씬 이동!");
                 SceneManager.LoadScene("01. Scenes/MainScene");
             })

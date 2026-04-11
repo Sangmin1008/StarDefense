@@ -15,6 +15,7 @@ public class GameManagerModel
 
     public bool HasNextStage()
     {
+        Debug.Log($"{CurrentStageIndex}");
         return CurrentStageIndex >= 0 && CurrentStageIndex < AllStages.Count - 1;
     }
 
