@@ -13,16 +13,18 @@ public class GameUIPresenter : IInitializable, IDisposable
     private readonly CommanderModel _commanderModel;
     private readonly GameUIView _uiView;
     private readonly GameManagerModel _gameManagerModel;
+    private readonly CoinModel _coinModel;
     
     private CompositeDisposable _disposables = new CompositeDisposable();
 
-    public GameUIPresenter(StageConfig stageConfig, WaveModel waveModel, CommanderModel commanderModel, GameUIView uiView, GameManagerModel gameManagerModel)
+    public GameUIPresenter(StageConfig stageConfig, WaveModel waveModel, CommanderModel commanderModel, GameUIView uiView, GameManagerModel gameManagerModel, CoinModel coinModel)
     {
         _stageConfig = stageConfig;
         _waveModel = waveModel;
         _commanderModel = commanderModel;
         _uiView = uiView;
         _gameManagerModel = gameManagerModel;
+        _coinModel = coinModel;
     }
     
     public void Initialize()
@@ -89,6 +91,10 @@ public class GameUIPresenter : IInitializable, IDisposable
                 SceneManager.LoadScene("01. Scenes/LobbyScene");
             })
             .AddTo(_disposables);
+        
+            _coinModel.CurrentCoin
+                .Subscribe(amount => _uiView.UpdateCoin(amount))
+                .AddTo(_disposables);
     }
     
     public void Dispose()

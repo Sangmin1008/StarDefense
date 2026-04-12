@@ -4,11 +4,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class HeroManager
+public class HeroSpawner
 {
-    private readonly HashSet<HeroPresenter> _activeHeroes = new HashSet<HeroPresenter>();
+    private readonly Dictionary<HeroModel, HeroPresenter> _activeHeroes = new Dictionary<HeroModel, HeroPresenter>();
     private readonly List<HeroConfig> _heroDatabase;
-    private readonly GridManager _gridManager;
+    private readonly GridModel _gridModel;
     private readonly EnemyRegistry _enemyRegistry;
     private readonly CoinModel _coinModel;
     private readonly ProjectileManager _projectileManager;
@@ -16,9 +16,9 @@ public class HeroManager
 
     private const float _offset = 0.3f; 
     
-    public HeroManager(GridManager gridManager, EnemyRegistry enemyRegistry, List<HeroConfig> heroDatabase, CoinModel coinModel, ProjectileManager projectileManager)
+    public HeroSpawner(GridModel gridModel, EnemyRegistry enemyRegistry, List<HeroConfig> heroDatabase, CoinModel coinModel, ProjectileManager projectileManager)
     {
-        _gridManager = gridManager;
+        _gridModel = gridModel;
         _enemyRegistry = enemyRegistry;
         _heroDatabase = heroDatabase;
         _coinModel = coinModel;
@@ -54,24 +54,27 @@ public class HeroManager
         return true;
     }
 
-    public bool TryUpgradeHero(HeroPresenter targetHero)
+    public bool TryUpgradeHero(HeroModel targetModel)
     {
-        HeroGrade currentGrade = targetHero.Model.Config.Grade;
-        HeroType currentType = targetHero.Model.Config.Type;
+        HeroGrade currentGrade = targetModel.Config.Grade;
+        HeroType currentType = targetModel.Config.Type;
         
         if (currentGrade == HeroGrade.Legendary) return false;
         
-        HeroPresenter otherHero = _activeHeroes.FirstOrDefault(h => h.Model.Config.Grade == currentGrade &&
-                                                                    h.Model.Config.Type == currentType && h != targetHero);
-        if (otherHero == null) return false;
+        HeroModel otherModel = _activeHeroes.Keys.FirstOrDefault(h => 
+            h.Config.Grade == currentGrade &&
+            h.Config.Type == currentType && 
+            h != targetModel);
+        
+        if (otherModel == null) return false;
 
-        if (!_coinModel.TrySpendCoin(HeroCostHelper.GetCost(targetHero.Model.Config.Grade))) return false;
+        if (!_coinModel.TrySpendCoin(HeroCostHelper.GetCost(targetModel.Config.Grade))) return false;
         
-        Vector3Int upgradeCellPos = targetHero.Model.CellPos;
-        Vector3 upgradeWorldPos = targetHero.View.transform.position;
+        Vector3Int upgradeCellPos = targetModel.CellPos;
+        Vector3 upgradeWorldPos = _activeHeroes[targetModel].View.transform.position;
         
-        RemoveHero(targetHero);
-        RemoveHero(otherHero);
+        RemoveHero(targetModel);
+        RemoveHero(otherModel);
         
         HeroGrade nextGrade = currentGrade + 1;
         List<HeroConfig> availableHeroes = _heroDatabase.Where(h => 
@@ -87,15 +90,17 @@ public class HeroManager
         return true;
     }
 
-    public void RemoveHero(HeroPresenter hero)
+    public void RemoveHero(HeroModel targetModel)
     {
-        _activeHeroes.Remove(hero);
-        _gridManager.ClearCell(hero.Model.CellPos);
+        if (!_activeHeroes.TryGetValue(targetModel, out HeroPresenter presenter)) return;
         
-        HeroConfig config = hero.Model.Config;
-        HeroView view = hero.View;
+        _activeHeroes.Remove(targetModel);
+        _gridModel.ClearCell(targetModel.CellPos);
         
-        hero.Dispose();
+        HeroConfig config = targetModel.Config;
+        HeroView view = presenter.View;
+        
+        presenter.Dispose();
 
         if (_heroPools.ContainsKey(config))
         {
@@ -116,8 +121,8 @@ public class HeroManager
         HeroPresenter presenter = new HeroPresenter(model, view, _enemyRegistry, _projectileManager);
         presenter.Initialize();
 
-        _activeHeroes.Add(presenter);
-        _gridManager.PlaceHero(cellPos, presenter);
+        _activeHeroes.Add(model, presenter);
+        _gridModel.PlaceHero(cellPos, model);
         
         Debug.Log($"[{cellPos}] 위치에 {config.Grade} 등급 {config.HeroName} 소환 완료!");
     }

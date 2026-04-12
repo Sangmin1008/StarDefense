@@ -11,8 +11,8 @@ public class StageInitializer : IInitializable, IDisposable
     private readonly CommanderModel _commanderModel;
     private readonly EnemyRegistry _registry;
     private readonly ProjectileManager _projectileManager;
-    private readonly GridManager _gridManager;
-    private readonly HeroManager _heroManager;
+    private readonly GridModel _gridModel;
+    private readonly HeroSpawner _heroSpawner;
     private readonly GameUIView _gameUIView;
     private readonly CoinModel _coinModel;
     
@@ -23,7 +23,7 @@ public class StageInitializer : IInitializable, IDisposable
     public StageInitializer(
         StageConfig stageConfig, CommanderView commanderView, CommanderModel commanderModel, 
         EnemyRegistry registry, ProjectileManager projectileManager,
-        GridManager gridManager, HeroManager heroManager, GameUIView gameUIView, CoinModel coinModel)
+        GridModel gridModel, HeroSpawner heroSpawner, GameUIView gameUIView, CoinModel coinModel)
     {
         _stageConfig = stageConfig;
         _commanderView = commanderView;
@@ -31,8 +31,8 @@ public class StageInitializer : IInitializable, IDisposable
         _registry = registry;
         _projectileManager = projectileManager;
         
-        _gridManager = gridManager;
-        _heroManager = heroManager;
+        _gridModel = gridModel;
+        _heroSpawner = heroSpawner;
         _gameUIView = gameUIView;
         _coinModel = coinModel;
     }
@@ -44,9 +44,19 @@ public class StageInitializer : IInitializable, IDisposable
             _currentMapInstance = UnityEngine.Object.Instantiate(_stageConfig.TileMapPrefab, Vector3.zero, Quaternion.identity);
             
             var clickDetector = _currentMapInstance.GetComponentInChildren<GridClickDetector>();
+            if (clickDetector == null)
+            {
+                Debug.LogError("타일맵 프리팹에 GridClickDetector를 못 찾음!!!");
+                return;
+            }
             
-            _gridInteractionPresenter = new GridInteractionPresenter(_gridManager, clickDetector, _gameUIView, _heroManager, _coinModel);
+            _gridInteractionPresenter = new GridInteractionPresenter(_gridModel, _gameUIView, _heroSpawner, _coinModel, _stageConfig, clickDetector);
             _gridInteractionPresenter.Initialize();
+            
+            foreach (var brokenPos in clickDetector.GetBrokenCells())
+            {
+                _gridModel.RegisterBrokenCell(brokenPos);
+            }
             
             Debug.Log("맵 및 그리드 시스템 초기화 완료");
         }
@@ -60,6 +70,13 @@ public class StageInitializer : IInitializable, IDisposable
     
     public void Dispose()
     {
-        _commanderPresenter.Dispose();
+        _gridInteractionPresenter?.Dispose();
+        _commanderPresenter?.Dispose();
+
+        if (_currentMapInstance != null)
+        {
+            UnityEngine.Object.Destroy(_currentMapInstance);
+            _currentMapInstance = null;
+        }
     }
 }

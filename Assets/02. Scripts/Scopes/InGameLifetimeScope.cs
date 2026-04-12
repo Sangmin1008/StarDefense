@@ -6,7 +6,6 @@ using VContainer.Unity;
 public class InGameLifetimeScope : LifetimeScope
 {
     [Header("Configurations")]
-    [SerializeField] private StageConfig stageConfig;
     [SerializeField] private List<HeroConfig> heroConfigs;
 
     [Header("Prefabs")]
@@ -19,36 +18,26 @@ public class InGameLifetimeScope : LifetimeScope
     
     protected override void Configure(IContainerBuilder builder)
     {
-        if (Parent != null && Parent.Container != null)
-        {
-            if (Parent.Container.TryResolve(out GameManagerModel gameManagerModel))
-            {
-                if (gameManagerModel.CurrentStageConfig != null)
-                {
-                    stageConfig = gameManagerModel.CurrentStageConfig;
-                }
-            }
-        }
+        var gameManagerModel = Parent.Container.Resolve<GameManagerModel>();
+        StageConfig currentStageConfig = gameManagerModel.CurrentStageConfig;
         
-        builder.RegisterInstance(stageConfig);
+        builder.RegisterInstance(currentStageConfig);
         builder.RegisterInstance(heroConfigs);
         
         builder.RegisterInstance(enemyViewPrefab);
         builder.RegisterInstance(commanderViewPrefab);
         
         builder.Register<WaveModel>(Lifetime.Scoped);
-        builder.Register<CommanderModel>(Lifetime.Scoped).WithParameter(stageConfig.CommanderConfig);
+        builder.Register<CommanderModel>(Lifetime.Scoped).WithParameter(currentStageConfig.CommanderConfig);
         builder.Register<EnemyRegistry>(Lifetime.Scoped);
-        builder.Register<GridManager>(Lifetime.Scoped);
-        builder.Register<HeroManager>(Lifetime.Scoped);
-        builder.Register<CoinModel>(Lifetime.Scoped).WithParameter(stageConfig.InitialCoin);
+        builder.Register<GridModel>(Lifetime.Scoped);
+        builder.Register<HeroSpawner>(Lifetime.Scoped);
+        builder.Register<CoinModel>(Lifetime.Scoped).WithParameter(currentStageConfig.InitialCoin);
         builder.Register<ProjectileManager>(Lifetime.Scoped);
         builder.RegisterEntryPoint<WavePresenter>();
         builder.RegisterEntryPoint<EnemySpawner>().AsSelf();
         builder.RegisterEntryPoint<StageInitializer>();
         builder.RegisterEntryPoint<GameUIPresenter>();
         builder.RegisterComponent(gameUIView);
-        // builder.RegisterEntryPoint<GridInteractionPresenter>();
-        // builder.RegisterComponent(gridClickDetector);
     }
 }
