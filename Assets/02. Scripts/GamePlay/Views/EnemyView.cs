@@ -50,7 +50,8 @@ public class EnemyView : MonoBehaviour
     {
         this.UpdateAsObservable()
             .Where(_ => _canMove)
-            .Subscribe(_ => MoveAlongPath());
+            .Subscribe(_ => MoveAlongPath())
+            .AddTo(this);
     }
 
     private void MoveAlongPath()
