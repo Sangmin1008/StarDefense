@@ -29,7 +29,7 @@ public class LobbyPresenter : IInitializable, IDisposable
                 _gameManagerModel.CurrentStageConfig = _gameManagerModel.AllStages[index];
                 _gameManagerModel.CurrentStageIndex = index;
                 Debug.Log("씬 이동!");
-                SceneManager.LoadScene("01. Scenes/MainScene");
+                SceneManager.LoadScene(SceneNames.Game);
             })
             .AddTo(_disposables);
     }

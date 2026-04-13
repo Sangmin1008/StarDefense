@@ -79,7 +79,7 @@ public class GameUIPresenter : IInitializable, IDisposable
                 }
                 else
                 {
-                    SceneManager.LoadScene("01. Scenes/LobbyScene");
+                    SceneManager.LoadScene(SceneNames.Lobby);
                 }
             })
             .AddTo(_disposables);
@@ -88,7 +88,7 @@ public class GameUIPresenter : IInitializable, IDisposable
             .Subscribe(_ =>
             {
                 Debug.Log("로비로 돌아가기!");
-                SceneManager.LoadScene("01. Scenes/LobbyScene");
+                SceneManager.LoadScene(SceneNames.Lobby);
             })
             .AddTo(_disposables);
         

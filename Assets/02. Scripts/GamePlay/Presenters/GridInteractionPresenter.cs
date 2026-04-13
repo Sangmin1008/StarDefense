@@ -67,7 +67,7 @@ public class GridInteractionPresenter : IInitializable, IDisposable
 
         if (_gridModel.IsBroken(cellPos))
         {
-            int cost = 50;
+            int cost = GameConstants.GridRepairCost;
             _uiView.ShowRepairGridPopup(worldPos, cost);
         }
         else if (_gridModel.IsEmpty(cellPos))
@@ -103,7 +103,7 @@ public class GridInteractionPresenter : IInitializable, IDisposable
 
     private void HandleRepairRequest()
     {
-        int repairCost = 50;
+        int repairCost = GameConstants.GridRepairCost;
         if (_coinModel.TrySpendCoin(repairCost))
         {
             _gridModel.RepairCell(_selectedCellPos);
