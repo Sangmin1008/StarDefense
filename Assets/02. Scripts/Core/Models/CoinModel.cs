@@ -7,9 +7,9 @@ public class CoinModel
 {
     public ReactiveProperty<int> CurrentCoin { get; }
 
-    public CoinModel(int initialCoin)
+    public CoinModel(StageConfig config)
     {
-        CurrentCoin = new ReactiveProperty<int>(initialCoin);
+        CurrentCoin = new ReactiveProperty<int>(config.InitialCoin);
     }
 
     public void AddCoin(int amount)

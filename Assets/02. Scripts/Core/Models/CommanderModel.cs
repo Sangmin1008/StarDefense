@@ -13,10 +13,10 @@ public class CommanderModel
     
     public CommanderConfig Config { get; }
 
-    public CommanderModel(CommanderConfig config)
+    public CommanderModel(StageConfig config)
     {
-        Config = config;
-        _currentHp = new ReactiveProperty<int>(config.MaxHealth);
+        Config = config.CommanderConfig;
+        _currentHp = new ReactiveProperty<int>(Config.MaxHealth);
         _isDead = new ReactiveProperty<bool>(false);
     }
     
