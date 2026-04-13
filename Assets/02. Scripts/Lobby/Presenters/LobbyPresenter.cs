@@ -13,7 +13,7 @@ public class LobbyPresenter : IInitializable, IDisposable
     
     private CompositeDisposable _disposables = new CompositeDisposable();
 
-    public LobbyPresenter(LobbyView lobbyView, GameManagerModel gameManagerModel, IReadOnlyList<StageConfig> stageConfigs)
+    public LobbyPresenter(LobbyView lobbyView, GameManagerModel gameManagerModel)
     {
         _lobbyView = lobbyView;
         _gameManagerModel = gameManagerModel;
