@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-public class CommanderModel : IDamageable
+public class CommanderModel
 {
     private ReactiveProperty<int> _currentHp;
     public IReadOnlyReactiveProperty<int> CurrentHp => _currentHp;

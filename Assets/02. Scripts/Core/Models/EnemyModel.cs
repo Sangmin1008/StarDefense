@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-public class EnemyModel : IDamageable
+public class EnemyModel
 {
     private ReactiveProperty<int> _currentHp;
     public IReadOnlyReactiveProperty<int> CurrentHp => _currentHp;
