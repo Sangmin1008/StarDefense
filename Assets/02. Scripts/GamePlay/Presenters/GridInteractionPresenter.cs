@@ -15,33 +15,23 @@ public class GridInteractionPresenter : IInitializable, IDisposable
     
     private Vector3Int _selectedCellPos;
     private Vector3 _selectedWorldPos;
-    private StageConfig _stageConfig;
     private HeroModel _selectedModel;
     
     private CompositeDisposable _disposables = new CompositeDisposable();
     
 
-    public GridInteractionPresenter(GridModel gridModel, GameUIView uiView, HeroSpawner heroSpawner, CoinModel coinModel, StageConfig stageConfig, GridClickDetector clickDetector)
+    public GridInteractionPresenter(GridModel gridModel, GameUIView uiView, HeroSpawner heroSpawner, CoinModel coinModel, GridClickDetector clickDetector)
     {
         _gridModel = gridModel;
         _uiView = uiView;
         _heroSpawner = heroSpawner;
         _coinModel = coinModel;
-        _stageConfig = stageConfig;
         _clickDetector = clickDetector;
     }
     
     public void Initialize()
     {
-        if (_stageConfig.TileMapPrefab != null)
-        {
-            _clickDetector.OnGridClicked += HandleGridClicked;
-        }
-        
-        // foreach (var brokenPos in _clickDetector.GetBrokenCells())
-        // {
-        //     _gridModel.RegisterBrokenCell(brokenPos);
-        // }
+        _clickDetector.OnGridClicked += HandleGridClicked;
         
         _uiView.OnSummonClicked
             .Subscribe(_ => HandleSummonRequest())
@@ -54,10 +44,6 @@ public class GridInteractionPresenter : IInitializable, IDisposable
         _uiView.OnRepairClicked
             .Subscribe(_ => HandleRepairRequest())
             .AddTo(_disposables);
-        
-        // _coinModel.CurrentCoin
-        //     .Subscribe(amount => _uiView.UpdateCoin(amount))
-        //     .AddTo(_disposables);
     }
 
     private void HandleGridClicked(Vector3Int cellPos, Vector3 worldPos)

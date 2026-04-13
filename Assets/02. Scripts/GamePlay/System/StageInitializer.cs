@@ -50,7 +50,7 @@ public class StageInitializer : IInitializable, IDisposable
                 return;
             }
             
-            _gridInteractionPresenter = new GridInteractionPresenter(_gridModel, _gameUIView, _heroSpawner, _coinModel, _stageConfig, clickDetector);
+            _gridInteractionPresenter = new GridInteractionPresenter(_gridModel, _gameUIView, _heroSpawner, _coinModel, clickDetector);
             _gridInteractionPresenter.Initialize();
             
             foreach (var brokenPos in clickDetector.GetBrokenCells())
