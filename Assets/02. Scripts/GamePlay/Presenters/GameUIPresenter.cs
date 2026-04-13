@@ -60,36 +60,15 @@ public class GameUIPresenter : IInitializable, IDisposable
             .AddTo(_disposables);
         
         _uiView.OnRetryClicked
-            .Subscribe(_ =>
-            {
-                Debug.Log("스테이지 재시작!");
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
-            })
+            .Subscribe(_ => _gameManagerModel.LoadStage(_gameManagerModel.CurrentStageIndex))
             .AddTo(_disposables);
 
         _uiView.OnNextClicked
-            .Subscribe(_ =>
-            {
-                Debug.Log("다음 스테이지!");
-                
-                if (_gameManagerModel.HasNextStage())
-                {
-                    _gameManagerModel.SetNextStage();
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                }
-                else
-                {
-                    SceneManager.LoadScene(SceneNames.Lobby);
-                }
-            })
+            .Subscribe(_ => _gameManagerModel.LoadNextStage())
             .AddTo(_disposables);
 
         _uiView.OnExitClicked
-            .Subscribe(_ =>
-            {
-                Debug.Log("로비로 돌아가기!");
-                SceneManager.LoadScene(SceneNames.Lobby);
-            })
+            .Subscribe(_ => _gameManagerModel.LoadLobby())
             .AddTo(_disposables);
         
             _coinModel.CurrentCoin

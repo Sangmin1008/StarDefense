@@ -22,15 +22,7 @@ public class LobbyPresenter : IInitializable, IDisposable
     public void Initialize()
     {
         _lobbyView.OnStageSelected
-            .Subscribe(index =>
-            {
-                if (index < 0 || index >= _gameManagerModel.AllStages.Count) return;
-                
-                _gameManagerModel.CurrentStageConfig = _gameManagerModel.AllStages[index];
-                _gameManagerModel.CurrentStageIndex = index;
-                Debug.Log("씬 이동!");
-                SceneManager.LoadScene(SceneNames.Game);
-            })
+            .Subscribe(index => _gameManagerModel.LoadStage(index))
             .AddTo(_disposables);
     }
 
