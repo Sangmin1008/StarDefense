@@ -1,18 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "EnemyConfig", menuName = "ScriptableObject/EnemyConfig")]
 public class EnemyConfig : ScriptableObject
 {
-    [Header("Enemy Name")] 
-    public string EnemyName;
+    [Header("Enemy Name")]
+    [SerializeField, FormerlySerializedAs("EnemyName")]
+    private string enemyName;
+    public string EnemyName => enemyName;
     
     [Header("Settings")]
-    public float MoveSpeed;
-    public int AttackPower;
-    public int MaxHealth;
+    [SerializeField, FormerlySerializedAs("MoveSpeed")]
+    private float moveSpeed;
+    public float MoveSpeed => moveSpeed;
 
-    [Header("Reward")] 
-    public int Reward;
+    [SerializeField, FormerlySerializedAs("AttackPower")]
+    private int attackPower;
+    public int AttackPower => attackPower;
+
+    [SerializeField, FormerlySerializedAs("MaxHealth")]
+    private int maxHealth;
+    public int MaxHealth => maxHealth;
+
+    [Header("Reward")]
+    [SerializeField, FormerlySerializedAs("Reward")]
+    private int reward;
+    public int Reward => reward;
 }

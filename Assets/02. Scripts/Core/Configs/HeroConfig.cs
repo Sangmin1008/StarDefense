@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum HeroGrade
 {
@@ -20,20 +21,46 @@ public enum HeroType
 public class HeroConfig : ScriptableObject
 {
     [Header("Settings")]
-    public string HeroName;
-    public HeroGrade Grade;
-    public HeroType Type;
-    
+    [SerializeField, FormerlySerializedAs("HeroName")]
+    private string heroName;
+    public string HeroName => heroName;
+
+    [SerializeField, FormerlySerializedAs("Grade")]
+    private HeroGrade grade;
+    public HeroGrade Grade => grade;
+
+    [SerializeField, FormerlySerializedAs("Type")]
+    private HeroType type;
+    public HeroType Type => type;
+
     [Header("Prefabs")]
-    public GameObject Prefab;
+    [SerializeField, FormerlySerializedAs("Prefab")]
+    private GameObject prefab;
+    public GameObject Prefab => prefab;
 
     [Header("Attack Settings")]
-    public int AttackPower;
-    public float AttackRange;
-    public float AttackCooldown;
-    
+    [SerializeField, FormerlySerializedAs("AttackPower")]
+    private int attackPower;
+    public int AttackPower => attackPower;
+
+    [SerializeField, FormerlySerializedAs("AttackRange")]
+    private float attackRange;
+    public float AttackRange => attackRange;
+
+    [SerializeField, FormerlySerializedAs("AttackCooldown")]
+    private float attackCooldown;
+    public float AttackCooldown => attackCooldown;
+
     [Header("Projectile Settings")]
-    public GameObject ProjectilePrefab;
-    public float ProjectileSpeed;
-    public float ProjectileMaxDistance;
+    [SerializeField, FormerlySerializedAs("ProjectilePrefab")]
+    private GameObject projectilePrefab;
+    public GameObject ProjectilePrefab => projectilePrefab;
+
+    [SerializeField, FormerlySerializedAs("ProjectileSpeed")]
+    private float projectileSpeed;
+    public float ProjectileSpeed => projectileSpeed;
+
+    [SerializeField, FormerlySerializedAs("ProjectileMaxDistance")]
+    private float projectileMaxDistance;
+    public float ProjectileMaxDistance => projectileMaxDistance;
 }
