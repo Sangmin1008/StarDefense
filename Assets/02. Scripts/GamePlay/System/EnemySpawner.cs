@@ -34,8 +34,13 @@ public class EnemySpawner : IInitializable, IDisposable
         _enemyView = enemyView;
         _registry = registry;
         _coinModel = coinModel;
-        
+    }
+    
+    public void Initialize()
+    {
         InitializePool();
+        _cts = new CancellationTokenSource();
+        WaveRoutineAsync(_cts.Token).Forget();
     }
 
     private void InitializePool()
@@ -84,11 +89,7 @@ public class EnemySpawner : IInitializable, IDisposable
         return presenter;
     }
     
-    public void Initialize()
-    {
-        _cts = new CancellationTokenSource();
-        WaveRoutineAsync(_cts.Token).Forget();
-    }
+
     
     
     private async UniTaskVoid WaveRoutineAsync(CancellationToken cancellationToken)
