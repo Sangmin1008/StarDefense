@@ -67,6 +67,9 @@ public class ProgressTweener
         }
         catch (OperationCanceledException)
         {
+#if UNITY_EDITOR
+            Debug.Log("TweenAsync 종료");
+#endif
         }
     }
 }

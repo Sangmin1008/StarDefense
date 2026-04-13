@@ -38,6 +38,9 @@ public class TouchToScreenAnimator : MonoBehaviour
         }
         catch (OperationCanceledException)
         {
+#if UNITY_EDITOR
+            Debug.Log("AnimateScaleAsync 종료");
+#endif
         }
     }
 

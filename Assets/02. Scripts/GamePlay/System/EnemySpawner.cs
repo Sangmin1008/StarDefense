@@ -131,7 +131,9 @@ public class EnemySpawner : IInitializable, IDisposable
         }
         catch (OperationCanceledException)
         {
+#if UNITY_EDITOR
             Debug.Log("게임 오버돼서 스폰 종료");
+#endif
         }
     }
     
