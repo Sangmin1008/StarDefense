@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
-public class HeroSpawner
+public class HeroSpawner : IDisposable
 {
     private readonly Dictionary<HeroModel, HeroPresenter> _activeHeroes = new Dictionary<HeroModel, HeroPresenter>();
     private readonly List<HeroConfig> _heroDatabase;
@@ -12,7 +15,8 @@ public class HeroSpawner
     private readonly EnemyRegistry _enemyRegistry;
     private readonly CoinModel _coinModel;
     private readonly ProjectileSpawner _projectileSpawner;
-    private readonly Dictionary<HeroConfig, ObjectPool<HeroView>> _heroPools = new Dictionary<HeroConfig, ObjectPool<HeroView>>();
+    
+    private readonly Dictionary<HeroConfig, ObjectPool<HeroPresenter>> _heroPools = new Dictionary<HeroConfig, ObjectPool<HeroPresenter>>();
 
     private const float _offset = 0.3f; 
     
@@ -25,15 +29,31 @@ public class HeroSpawner
         _projectileSpawner = projectileSpawner;
     }
     
-    private HeroView GetHeroView(HeroConfig config)
+    private HeroPresenter CreatePresenter(HeroConfig config)
+    {
+        HeroView view = Object.Instantiate(config.Prefab).GetComponent<HeroView>();
+        HeroModel model = new HeroModel();
+        
+        return new HeroPresenter(model, view, _enemyRegistry, _projectileSpawner);
+    }
+    
+    private HeroPresenter GetHeroPresenter(HeroConfig config)
     {
         if (!_heroPools.ContainsKey(config))
         {
-            _heroPools[config] = new ObjectPool<HeroView>(
-                createFunc: () => Object.Instantiate(config.Prefab).GetComponent<HeroView>(),
-                actionOnGet: view => view.gameObject.SetActive(true),
-                actionOnRelease: view => view.gameObject.SetActive(false),
-                actionOnDestroy: view => { if (view) Object.Destroy(view.gameObject); }
+            _heroPools[config] = new ObjectPool<HeroPresenter>(
+                createFunc: () => CreatePresenter(config),
+                actionOnGet: p => p.View.gameObject.SetActive(true),
+                actionOnRelease: p => 
+                {
+                    p.View.gameObject.SetActive(false);
+                    p.Release();
+                },
+                actionOnDestroy: p => 
+                {
+                    p.Dispose();
+                    if (p.View) Object.Destroy(p.View.gameObject);
+                }
             );
         }
         return _heroPools[config].Get();
@@ -98,32 +118,43 @@ public class HeroSpawner
         _gridModel.ClearCell(targetModel.CellPos);
         
         HeroConfig config = targetModel.Config;
-        HeroView view = presenter.View;
         
-        presenter.Dispose();
-
         if (_heroPools.ContainsKey(config))
         {
-            _heroPools[config].Release(view);
+            _heroPools[config].Release(presenter);
         }
         else
         {
-            Object.Destroy(view.gameObject);
+            presenter.Dispose();
+            Object.Destroy(presenter.View.gameObject);
         }
     }
 
     private void ForceSpawnHero(HeroConfig config, Vector3Int cellPos, Vector3 worldPos)
     {
-        HeroView view = GetHeroView(config);
-        view.transform.position = worldPos;
+        HeroPresenter presenter = GetHeroPresenter(config);
+        
+        presenter.View.transform.position = worldPos;
+        presenter.ResetAndStart(config, cellPos);
 
-        HeroModel model = new HeroModel(config, cellPos);
-        HeroPresenter presenter = new HeroPresenter(model, view, _enemyRegistry, _projectileSpawner);
-        presenter.Initialize();
-
-        _activeHeroes.Add(model, presenter);
-        _gridModel.PlaceHero(cellPos, model);
+        _activeHeroes.Add(presenter.Model, presenter);
+        _gridModel.PlaceHero(cellPos, presenter.Model);
         
         Debug.Log($"[{cellPos}] 위치에 {config.Grade} 등급 {config.HeroName} 소환 완료!");
+    }
+
+    public void Dispose()
+    {
+        foreach (var presenter in _activeHeroes.Values)
+        {
+            presenter.Dispose(); 
+        }
+        _activeHeroes.Clear();
+
+        foreach (var pool in _heroPools.Values)
+        {
+            pool.Dispose();
+        }
+        _heroPools.Clear();
     }
 }

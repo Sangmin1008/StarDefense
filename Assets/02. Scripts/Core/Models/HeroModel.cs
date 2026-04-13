@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class HeroModel
 {
-    public HeroConfig Config { get; }
-    public int CurrentAttackPower { get; }
-    public Vector3Int CellPos { get; }
+    public HeroConfig Config { get; private set; }
+    public int CurrentAttackPower { get; private set; }
+    public Vector3Int CellPos { get; private set; }
+    
+    public HeroModel() { }
 
-    public HeroModel(HeroConfig config, Vector3Int cellPos)
+    public void ResetData(HeroConfig config, Vector3Int cellPos)
     {
         Config = config;
         CurrentAttackPower = config.AttackPower;

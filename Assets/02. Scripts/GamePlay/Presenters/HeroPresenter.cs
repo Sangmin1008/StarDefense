@@ -23,14 +23,16 @@ public class HeroPresenter : IInitializable, IDisposable
         _view = view;
         _enemyRegistry = enemyRegistry;
         _projectileSpawner = projectileSpawner;
-        
-        _view.SetGizmoRange(_model.Config.AttackRange);
     }
     
-    public void Initialize()
+    public void Initialize() { }
+    
+    public void ResetAndStart(HeroConfig config, Vector3Int cellPos)
     {
+        _model.ResetData(config, cellPos);
+        _view.SetGizmoRange(_model.Config.AttackRange);
+
         Observable.Interval(TimeSpan.FromSeconds(_model.Config.AttackCooldown))
-            .TakeUntilDestroy(_view)
             .Subscribe(_ => TryAttack())
             .AddTo(_disposables);
     }
@@ -54,9 +56,15 @@ public class HeroPresenter : IInitializable, IDisposable
             }
         }
     }
+    
+    public void Release()
+    {
+        _disposables.Clear();
+    }
 
     public void Dispose()
     {
+        Release();
         _disposables.Dispose();
     }
 }
