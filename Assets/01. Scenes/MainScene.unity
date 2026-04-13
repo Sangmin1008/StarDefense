@@ -390,6 +390,10 @@ GameObject:
   - component: {fileID: 178494121}
   - component: {fileID: 178494120}
   - component: {fileID: 178494119}
+  - component: {fileID: 178494127}
+  - component: {fileID: 178494126}
+  - component: {fileID: 178494125}
+  - component: {fileID: 178494124}
   - component: {fileID: 178494123}
   m_Layer: 5
   m_Name: Canvas
@@ -495,14 +499,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 178494118}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 582f7a20fbf1b2a46a115609fbd47e41, type: 3}
+  m_Script: {fileID: 11500000, guid: 633b71f64931d2248bbbd450d3b5c9dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commanderHpSlider: {fileID: 292159837}
-  commanderHpText: {fileID: 345182235}
-  waveCountText: {fileID: 1805320566}
-  aliveEnemyCountText: {fileID: 2113655497}
-  waveDelayText: {fileID: 1791345877}
+  resultScreen: {fileID: 1262875532}
+  retryButton: {fileID: 637777617}
+  nextButton: {fileID: 41395737}
+  exitButton: {fileID: 1565866401}
+  victoryText: {fileID: 2003241970}
+  defeatText: {fileID: 1595479905}
+--- !u!114 &178494124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178494118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64145ee2f297ce642a3525566ad2b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinText: {fileID: 475340334}
+--- !u!114 &178494125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178494118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc394bb73d986f408d0163a32b03f72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   gridPopupContainer: {fileID: 344558120}
   summonButton: {fileID: 1088186841}
   upgradeButton: {fileID: 785141137}
@@ -510,13 +540,35 @@ MonoBehaviour:
   needSummonCostText: {fileID: 1091352650}
   needUpgradeCostText: {fileID: 1593920038}
   repairCostText: {fileID: 868128312}
-  coinText: {fileID: 475340334}
-  resultScreen: {fileID: 1262875532}
-  retryButton: {fileID: 637777617}
-  nextButton: {fileID: 41395737}
-  exitButton: {fileID: 1565866401}
-  victoryText: {fileID: 2003241970}
-  defeatText: {fileID: 1595479905}
+--- !u!114 &178494126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178494118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb1f0ede4fa1d9f42a4a977b6d62669c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveCountText: {fileID: 1805320566}
+  aliveEnemyCountText: {fileID: 2113655497}
+  waveDelayText: {fileID: 1791345877}
+--- !u!114 &178494127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178494118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c59e9fa764c7a94ba106830729970f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commanderHpSlider: {fileID: 292159837}
+  commanderHpText: {fileID: 345182235}
 --- !u!1 &204479646
 GameObject:
   m_ObjectHideFlags: 0
@@ -2900,7 +2952,6 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  stageConfig: {fileID: 11400000, guid: 1ce02f5552385c249917100d0f2dad3d, type: 2}
   heroConfigs:
   - {fileID: 11400000, guid: 10215425e65f02d4883babbc0f7db414, type: 2}
   - {fileID: 11400000, guid: a88d470456ab7f14fbf24acb90a6323e, type: 2}
@@ -2914,7 +2965,11 @@ MonoBehaviour:
     type: 3}
   commanderViewPrefab: {fileID: 1220689652323866378, guid: 3aaedc53e12c960439ca5c2a9392a7cc,
     type: 3}
-  gameUIView: {fileID: 178494123}
+  commanderUIView: {fileID: 178494127}
+  waveUIView: {fileID: 178494126}
+  coinUIView: {fileID: 178494124}
+  gridPopupUIView: {fileID: 178494125}
+  gameResultUIView: {fileID: 178494123}
 --- !u!4 &1144128077
 Transform:
   m_ObjectHideFlags: 0

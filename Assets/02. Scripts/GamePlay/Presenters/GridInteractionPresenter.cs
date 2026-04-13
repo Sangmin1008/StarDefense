@@ -9,7 +9,7 @@ public class GridInteractionPresenter : IInitializable, IDisposable
 {
     private readonly GridModel _gridModel;
     private readonly HeroSpawner _heroSpawner;
-    private readonly GameUIView _uiView;
+    private readonly GridPopupUIView _uiView;
     private readonly CoinModel _coinModel;
     private readonly GridClickDetector _clickDetector;
     
@@ -20,7 +20,8 @@ public class GridInteractionPresenter : IInitializable, IDisposable
     private CompositeDisposable _disposables = new CompositeDisposable();
     
 
-    public GridInteractionPresenter(GridModel gridModel, GameUIView uiView, HeroSpawner heroSpawner, CoinModel coinModel, GridClickDetector clickDetector)
+    public GridInteractionPresenter(GridModel gridModel, GridPopupUIView uiView, HeroSpawner heroSpawner, CoinModel coinModel, 
+        GridClickDetector clickDetector)
     {
         _gridModel = gridModel;
         _uiView = uiView;

@@ -41,7 +41,6 @@ public class HeroPresenter : IInitializable, IDisposable
     {
         if (_enemyRegistry.TryGetClosestEnemy(_view.transform.position, _model.Config.AttackRange, out EnemyModel targetModel, out Vector3 targetPosition))
         {
-            // targetModel.TakeDamage(_model.CurrentAttackPower);
             if (_enemyRegistry.TryGetView(targetModel, out EnemyView targetView))
             {
                 _projectileSpawner.SpawnProjectile(

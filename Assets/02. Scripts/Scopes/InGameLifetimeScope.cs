@@ -13,7 +13,11 @@ public class InGameLifetimeScope : LifetimeScope
     [SerializeField] private CommanderView commanderViewPrefab;
     
     [Header("UI Views")]
-    [SerializeField] private GameUIView gameUIView;
+    [SerializeField] private CommanderUIView commanderUIView;
+    [SerializeField] private WaveUIView waveUIView;
+    [SerializeField] private CoinUIView coinUIView;
+    [SerializeField] private GridPopupUIView gridPopupUIView;
+    [SerializeField] private GameResultUIView gameResultUIView;
     
     
     protected override void Configure(IContainerBuilder builder)
@@ -27,8 +31,6 @@ public class InGameLifetimeScope : LifetimeScope
         builder.RegisterInstance(heroConfigs);
         builder.RegisterInstance(enemyViewPrefab);
         builder.RegisterInstance(commanderViewPrefab);
-        
-
         builder.Register<WaveModel>(Lifetime.Scoped);
         builder.Register<CommanderModel>(Lifetime.Scoped);
         builder.Register<EnemyRegistry>(Lifetime.Scoped);
@@ -39,7 +41,14 @@ public class InGameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<WavePresenter>();
         builder.RegisterEntryPoint<EnemySpawner>().AsSelf();
         builder.RegisterEntryPoint<StageInitializer>();
-        builder.RegisterEntryPoint<GameUIPresenter>();
-        builder.RegisterComponent(gameUIView);
+        builder.RegisterEntryPoint<CommanderUIPresenter>();
+        builder.RegisterEntryPoint<WaveUIPresenter>();
+        builder.RegisterEntryPoint<CoinUIPresenter>();
+        builder.RegisterEntryPoint<GameResultUIPresenter>();
+        builder.RegisterComponent(commanderUIView);
+        builder.RegisterComponent(waveUIView);
+        builder.RegisterComponent(coinUIView);
+        builder.RegisterComponent(gridPopupUIView);
+        builder.RegisterComponent(gameResultUIView);
     }
 }

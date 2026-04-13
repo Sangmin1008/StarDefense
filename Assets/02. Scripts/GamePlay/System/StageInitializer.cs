@@ -13,7 +13,7 @@ public class StageInitializer : IInitializable, IDisposable
     private readonly ProjectileSpawner _projectileSpawner;
     private readonly GridModel _gridModel;
     private readonly HeroSpawner _heroSpawner;
-    private readonly GameUIView _gameUIView;
+    private readonly GridPopupUIView _gridPopupUIView;
     private readonly CoinModel _coinModel;
     
     private CommanderPresenter _commanderPresenter;
@@ -23,7 +23,7 @@ public class StageInitializer : IInitializable, IDisposable
     public StageInitializer(
         StageConfig stageConfig, CommanderView commanderView, CommanderModel commanderModel, 
         EnemyRegistry registry, ProjectileSpawner projectileSpawner,
-        GridModel gridModel, HeroSpawner heroSpawner, GameUIView gameUIView, CoinModel coinModel)
+        GridModel gridModel, HeroSpawner heroSpawner, GridPopupUIView gridPopupUIView, CoinModel coinModel)
     {
         _stageConfig = stageConfig;
         _commanderView = commanderView;
@@ -33,7 +33,7 @@ public class StageInitializer : IInitializable, IDisposable
         
         _gridModel = gridModel;
         _heroSpawner = heroSpawner;
-        _gameUIView = gameUIView;
+        _gridPopupUIView = gridPopupUIView;
         _coinModel = coinModel;
     }
     
@@ -50,7 +50,7 @@ public class StageInitializer : IInitializable, IDisposable
                 return;
             }
             
-            _gridInteractionPresenter = new GridInteractionPresenter(_gridModel, _gameUIView, _heroSpawner, _coinModel, clickDetector);
+            _gridInteractionPresenter = new GridInteractionPresenter(_gridModel, _gridPopupUIView, _heroSpawner, _coinModel, clickDetector);
             _gridInteractionPresenter.Initialize();
             
             foreach (var brokenPos in clickDetector.GetBrokenCells())
