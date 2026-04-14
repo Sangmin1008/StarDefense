@@ -28,6 +28,8 @@ public class EnemyPresenter : IInitializable, IDisposable
     
     public void ResetAndStart(EnemyConfig config, List<Vector3> waypoints)
     {
+        Release();
+        
         _model.ResetData(config);
         _view.SetupMovement(waypoints, config.MoveSpeed);
 

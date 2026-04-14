@@ -27,6 +27,8 @@ public class ProjectilePresenter : IInitializable, IDisposable
     
     public void ResetDataAndFire(Vector3 startPos, int damage, float speed, float maxDist, EnemyModel targetModel, GameObject targetObj)
     {
+        Release();
+        
         _view.transform.position = startPos;
         _model.UpdateData(damage, speed, maxDist, targetModel, targetObj);
 

@@ -29,6 +29,8 @@ public class HeroPresenter : IInitializable, IDisposable
     
     public void ResetAndStart(HeroConfig config, Vector3Int cellPos)
     {
+        Release();
+        
         _model.ResetData(config, cellPos);
         _view.SetGizmoRange(_model.Config.AttackRange);
 
