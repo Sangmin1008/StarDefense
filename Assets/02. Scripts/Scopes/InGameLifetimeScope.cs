@@ -19,6 +19,9 @@ public class InGameLifetimeScope : LifetimeScope
     [SerializeField] private GridPopupUIView gridPopupUIView;
     [SerializeField] private GameResultUIView gameResultUIView;
     
+    [Header("Canvas Reference")]
+    [SerializeField] private Transform mainCanvasTransform;
+    
     
     protected override void Configure(IContainerBuilder builder)
     {
@@ -31,24 +34,28 @@ public class InGameLifetimeScope : LifetimeScope
         builder.RegisterInstance(heroConfigs);
         builder.RegisterInstance(enemyViewPrefab);
         builder.RegisterInstance(commanderViewPrefab);
-        builder.Register<WaveModel>(Lifetime.Scoped);
-        builder.Register<CommanderModel>(Lifetime.Scoped);
-        builder.Register<EnemyRegistry>(Lifetime.Scoped);
-        builder.Register<GridModel>(Lifetime.Scoped);
-        builder.Register<HeroSpawner>(Lifetime.Scoped);
-        builder.Register<CoinModel>(Lifetime.Scoped);
-        builder.Register<ProjectileSpawner>(Lifetime.Scoped);
+        
+        builder.Register<WaveModel>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+        builder.Register<CommanderModel>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+        builder.Register<EnemyRegistry>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+        builder.Register<GridModel>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+        builder.Register<CoinModel>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+        
+        builder.Register<HeroSpawner>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+        builder.Register<ProjectileSpawner>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+
         builder.RegisterEntryPoint<WavePresenter>();
-        builder.RegisterEntryPoint<EnemySpawner>().AsSelf();
+        builder.RegisterEntryPoint<EnemySpawner>().AsSelf(); 
         builder.RegisterEntryPoint<StageInitializer>();
         builder.RegisterEntryPoint<CommanderUIPresenter>();
         builder.RegisterEntryPoint<WaveUIPresenter>();
         builder.RegisterEntryPoint<CoinUIPresenter>();
         builder.RegisterEntryPoint<GameResultUIPresenter>();
-        builder.RegisterComponent(commanderUIView);
-        builder.RegisterComponent(waveUIView);
-        builder.RegisterComponent(coinUIView);
-        builder.RegisterComponent(gridPopupUIView);
-        builder.RegisterComponent(gameResultUIView);
+
+        builder.RegisterComponentInNewPrefab(commanderUIView, Lifetime.Scoped).UnderTransform(mainCanvasTransform);
+        builder.RegisterComponentInNewPrefab(waveUIView, Lifetime.Scoped).UnderTransform(mainCanvasTransform);
+        builder.RegisterComponentInNewPrefab(coinUIView, Lifetime.Scoped).UnderTransform(mainCanvasTransform);
+        builder.RegisterComponentInNewPrefab(gridPopupUIView, Lifetime.Scoped).UnderTransform(mainCanvasTransform);
+        builder.RegisterComponentInNewPrefab(gameResultUIView, Lifetime.Scoped).UnderTransform(mainCanvasTransform);
     }
 }
