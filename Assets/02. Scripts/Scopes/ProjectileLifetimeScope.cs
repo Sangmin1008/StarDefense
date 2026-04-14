@@ -12,5 +12,6 @@ public class ProjectileLifetimeScope : LifetimeScope
     {
         builder.RegisterInstance<IReadOnlyList<StageConfig>>(allStages);
         builder.Register<GameManagerModel>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<SceneFlowService>();
     }
 }

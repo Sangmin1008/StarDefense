@@ -22,7 +22,7 @@ public class LobbyPresenter : IInitializable, IDisposable
     public void Initialize()
     {
         _lobbyView.OnStageSelected
-            .Subscribe(index => _gameManagerModel.LoadStage(index))
+            .Subscribe(index => _gameManagerModel.PrepareStage(index))
             .AddTo(_disposables);
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,9 @@ public class GameManagerModel
     public IReadOnlyList<StageConfig> AllStages { get; }
     public StageConfig CurrentStageConfig { get; set; }
     public int CurrentStageIndex { get; set; } = -1;
+    
+    public Subject<Unit> OnRequestLoadGameScene { get; } = new Subject<Unit>();
+    public Subject<Unit> OnRequestLoadLobbyScene { get; } = new Subject<Unit>();
 
     public GameManagerModel(IReadOnlyList<StageConfig> allStages)
     {
@@ -16,43 +20,35 @@ public class GameManagerModel
 
     private bool HasNextStage()
     {
-        Debug.Log($"{CurrentStageIndex}");
         return CurrentStageIndex >= 0 && CurrentStageIndex < AllStages.Count - 1;
     }
 
-    private void SetNextStage()
-    {
-        if (HasNextStage())
-        {
-            CurrentStageIndex++;
-            CurrentStageConfig = AllStages[CurrentStageIndex];
-        }
-    }
-
-    public void LoadStage(int index)
+    public void PrepareStage(int index)
     {
         if (index < 0 || index >= AllStages.Count) return;
                 
         CurrentStageConfig = AllStages[index];
         CurrentStageIndex = index;
-        SceneManager.LoadScene(SceneNames.Game);
+        
+        OnRequestLoadGameScene.OnNext(Unit.Default);
     }
-
-    public void LoadNextStage()
+    
+    public void PrepareNextStage()
     {
         if (HasNextStage())
         {
-            SetNextStage();
-            SceneManager.LoadScene(SceneNames.Game);
+            CurrentStageIndex++;
+            CurrentStageConfig = AllStages[CurrentStageIndex];
+            OnRequestLoadGameScene.OnNext(Unit.Default);
         }
         else
         {
-            SceneManager.LoadScene(SceneNames.Lobby);
+            RequestLoadLobby();
         }
     }
 
-    public void LoadLobby()
+    public void RequestLoadLobby()
     {
-        SceneManager.LoadScene(SceneNames.Lobby);
+        OnRequestLoadLobbyScene.OnNext(Unit.Default);
     }
 }

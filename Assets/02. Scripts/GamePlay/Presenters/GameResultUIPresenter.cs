@@ -33,15 +33,15 @@ public class GameResultUIPresenter : IInitializable, IDisposable
             .AddTo(_disposables);
         
         _uiView.OnRetryClicked
-            .Subscribe(_ => _gameManagerModel.LoadStage(_gameManagerModel.CurrentStageIndex))
+            .Subscribe(_ => _gameManagerModel.PrepareStage(_gameManagerModel.CurrentStageIndex))
             .AddTo(_disposables);
 
         _uiView.OnNextClicked
-            .Subscribe(_ => _gameManagerModel.LoadNextStage())
+            .Subscribe(_ => _gameManagerModel.PrepareNextStage())
             .AddTo(_disposables);
 
         _uiView.OnExitClicked
-            .Subscribe(_ => _gameManagerModel.LoadLobby())
+            .Subscribe(_ => _gameManagerModel.RequestLoadLobby())
             .AddTo(_disposables);
     }
 
