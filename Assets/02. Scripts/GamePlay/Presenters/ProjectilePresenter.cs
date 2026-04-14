@@ -49,9 +49,16 @@ public class ProjectilePresenter : IInitializable, IDisposable
     
     private void UpdateMovement()
     {
-        if (_model.TargetModel != null && !_model.TargetModel.IsDead.Value && _model.TargetView != null)
+        if (_model.TargetModel != null)
         {
-            _model.CurrentDirection = (_model.TargetView.transform.position - _view.transform.position).normalized;
+            if (_model.TargetModel.IsDead.Value)
+            {
+                _model.ResetTarget();
+            }
+            else if (_model.TargetView != null)
+            {
+                _model.CurrentDirection = (_model.TargetView.transform.position - _view.transform.position).normalized;
+            }
         }
 
         _view.Move(_model.CurrentDirection, _model.Speed);
@@ -81,23 +88,11 @@ public class ProjectilePresenter : IInitializable, IDisposable
     
     public void Release()
     {
-        if (_view != null)
-        {
-            _view.OnHitEnemy
-                .Subscribe(HandleHitEnemy)
-                .AddTo(_disposables);
-        }
         _disposables.Clear();
     }
 
     public void Dispose()
     {
-        if (_view != null)
-        {
-            _view.OnHitEnemy
-                .Subscribe(HandleHitEnemy)
-                .AddTo(_disposables);
-        }
         _disposables.Dispose();
     }
 }

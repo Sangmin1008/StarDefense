@@ -28,4 +28,10 @@ public class ProjectileModel
         TargetView = targetView;
         TraveledDistance = 0f;
     }
+
+    public void ResetTarget()
+    {
+        TargetModel = null;
+        TargetView = null;
+    }
 }
