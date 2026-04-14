@@ -12,8 +12,8 @@ public class EnemyPresenter : IInitializable, IDisposable
     private readonly EnemyView _view;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
     
-    public event Action<EnemyPresenter> OnDeath;
-    public event Action<EnemyPresenter> OnEscapedEvent;
+    public Subject<EnemyPresenter> OnDeath { get; } = new Subject<EnemyPresenter>();
+    public Subject<EnemyPresenter> OnEscaped { get; } = new Subject<EnemyPresenter>();
     
     public EnemyView View => _view;
     public EnemyModel Model => _model;
@@ -53,13 +53,13 @@ public class EnemyPresenter : IInitializable, IDisposable
 
     private void HandleDeath()
     {
-        OnDeath?.Invoke(this);
+        OnDeath.OnNext(this);
     }
 
     private void HandleReachedDestination()
     {
         _model.OnEscaped.OnNext(Unit.Default);
-        OnEscapedEvent?.Invoke(this);
+        OnEscaped.OnNext(this);
     }
     
     public void Release()

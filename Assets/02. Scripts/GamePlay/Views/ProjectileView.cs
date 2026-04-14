@@ -1,17 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public class ProjectileView : MonoBehaviour
 {
-    public event Action<EnemyView> OnHitEnemy;
+    public Subject<EnemyView> OnHitEnemy { get; } = new Subject<EnemyView>();
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out EnemyView enemy))
         {
-            OnHitEnemy?.Invoke(enemy);
+            OnHitEnemy.OnNext(enemy);
         }
     }
 

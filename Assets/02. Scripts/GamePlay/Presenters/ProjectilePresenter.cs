@@ -13,7 +13,7 @@ public class ProjectilePresenter : IInitializable, IDisposable
     
     private CompositeDisposable _disposables = new CompositeDisposable();
     
-    public event Action<ProjectilePresenter> OnComplete;
+    public Subject<ProjectilePresenter> OnComplete { get; } = new Subject<ProjectilePresenter>();
     public ProjectileView View => _view;
     
     public ProjectilePresenter(ProjectileModel model, ProjectileView view, EnemyRegistry registry)
@@ -37,7 +37,9 @@ public class ProjectilePresenter : IInitializable, IDisposable
             _model.CurrentDirection = (_model.TargetView.transform.position - _view.transform.position).normalized;
         }
         
-        _view.OnHitEnemy += HandleHitEnemy;
+        _view.OnHitEnemy
+            .Subscribe(HandleHitEnemy)
+            .AddTo(_disposables);
         
         Observable.EveryUpdate()
             .TakeUntilDestroy(_view)
@@ -74,18 +76,28 @@ public class ProjectilePresenter : IInitializable, IDisposable
 
     private void Complete()
     {
-        OnComplete?.Invoke(this);
+        OnComplete.OnNext(this);
     }
     
     public void Release()
     {
-        if (_view != null) _view.OnHitEnemy -= HandleHitEnemy;
+        if (_view != null)
+        {
+            _view.OnHitEnemy
+                .Subscribe(HandleHitEnemy)
+                .AddTo(_disposables);
+        }
         _disposables.Clear();
     }
 
     public void Dispose()
     {
-        if (_view != null) _view.OnHitEnemy -= HandleHitEnemy;
+        if (_view != null)
+        {
+            _view.OnHitEnemy
+                .Subscribe(HandleHitEnemy)
+                .AddTo(_disposables);
+        }
         _disposables.Dispose();
     }
 }

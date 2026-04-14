@@ -71,20 +71,23 @@ public class EnemySpawner : IInitializable, IDisposable
         EnemyModel model = new EnemyModel();
         EnemyPresenter presenter = new EnemyPresenter(model, view);
 
-        presenter.OnDeath += p => 
-        {
-            _waveModel.AliveEnemiesCount.Value--;
-            _coinModel.AddCoin(p.Model.Config.Reward);
-            _enemyPool.Release(p);
-        };
+        presenter.OnDeath
+            .Subscribe(p => 
+            {
+                _waveModel.AliveEnemiesCount.Value--;
+                _coinModel.AddCoin(p.Model.Config.Reward);
+                _enemyPool.Release(p);
+            })
+            .AddTo(_disposables);
 
-        presenter.OnEscapedEvent += (p) =>
-        {
-            _waveModel.AliveEnemiesCount.Value--;
-            _commanderModel.TakeDamage(p.Model.Config.AttackPower);
-            Debug.Log("적이 도달, 체력 감소");
-            _enemyPool.Release(p);
-        };
+        presenter.OnEscaped
+            .Subscribe(p =>
+            {
+                _waveModel.AliveEnemiesCount.Value--;
+                _commanderModel.TakeDamage(p.Model.Config.AttackPower);
+                _enemyPool.Release(p);
+            })
+            .AddTo(_disposables);
 
         return presenter;
     }
