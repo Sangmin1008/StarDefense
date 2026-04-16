@@ -3,7 +3,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class ProjectileLifetimeScope : LifetimeScope
+public class ProjectLifetimeScope : LifetimeScope
 {
     [Header("Global Stage Datas")]
     [SerializeField] private List<StageConfig> allStages;
