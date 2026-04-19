@@ -13,5 +13,6 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterInstance<IReadOnlyList<StageConfig>>(allStages);
         builder.Register<GameManagerModel>(Lifetime.Singleton);
         builder.RegisterEntryPoint<SceneFlowService>();
+        builder.RegisterEntryPoint<AppSettingsInitializer>();
     }
 }
