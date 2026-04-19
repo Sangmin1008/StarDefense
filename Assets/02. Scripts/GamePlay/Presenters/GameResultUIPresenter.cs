@@ -24,12 +24,20 @@ public class GameResultUIPresenter : IInitializable, IDisposable
     {
         _waveModel.IsDefeat
             .Where(isDefeat => isDefeat)
-            .Subscribe(_ => _uiView.ShowDefeatScreen())
+            .Subscribe(_ =>
+            {
+                _uiView.SetupResult(false);
+                _uiView.ShowResultScreen();
+            })
             .AddTo(_disposables);
 
         _waveModel.IsVictory
             .Where(isVictory => isVictory)
-            .Subscribe(_ => _uiView.ShowVictoryScreen())
+            .Subscribe(_ =>
+            {
+                _uiView.SetupResult(true);
+                _uiView.ShowResultScreen();
+            })
             .AddTo(_disposables);
         
         _uiView.OnRetryClicked

@@ -8,41 +8,54 @@ using UnityEngine.UI;
 
 public class GameResultUIView : MonoBehaviour
 {
+    [Header("Canvas")] 
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private CanvasGroup canvasGroup;
+    
     [Header("Result Screens")]
     [SerializeField] private GameObject resultScreen;
     [SerializeField] private Button retryButton;
     [SerializeField] private Button nextButton;
     [SerializeField] private Button exitButton;
-    [SerializeField] private TextMeshProUGUI victoryText;
-    [SerializeField] private TextMeshProUGUI defeatText;
+    [SerializeField] private TextMeshProUGUI resultText;
     
     public IObservable<Unit> OnRetryClicked => retryButton.onClick.AsObservable();
     public IObservable<Unit> OnNextClicked => nextButton.onClick.AsObservable();
     public IObservable<Unit> OnExitClicked => exitButton.onClick.AsObservable();
-    
-    public void ShowVictoryScreen()
+
+    private void Awake()
     {
-        if (!resultScreen) return;
-        resultScreen.SetActive(true);
-        ShowResult(true);
+        HideResultScreens();
     }
 
-    public void ShowDefeatScreen()
+    public void ShowResultScreen()
     {
-        if (!resultScreen) return;
-        resultScreen.SetActive(true);
-        ShowResult(false);
+        canvas.enabled = true;
+        canvasGroup.alpha = 1f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
     }
 
     private void HideResultScreens()
     {
-        if (resultScreen != null) resultScreen.SetActive(false);
+        canvasGroup.alpha = 0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+        canvas.enabled = false;
     }
 
-    private void ShowResult(bool victory)
+    public void SetupResult(bool victory)
     {
-        victoryText.gameObject.SetActive(victory);
-        defeatText.gameObject.SetActive(!victory);
+        if (victory)
+        {
+            resultText.text = "Victory!";
+            resultText.color = Color.green;
+        }
+        else
+        {
+            resultText.text = "Defeat!";
+            resultText.color = Color.red;
+        }
         
         nextButton.gameObject.SetActive(victory);
         retryButton.gameObject.SetActive(!victory);
