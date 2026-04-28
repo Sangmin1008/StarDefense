@@ -1,85 +1,239 @@
 # SlimeDefense
 
-SlimeDefense는 Unity 기반의 클래식 타워 디펜스 게임입니다. 
-그리드 위에 영웅을 배치하고, 적의 이동 경로와 웨이브 흐름을 방어하여 지휘관을 끝까지 지켜내는 것이 게임의 목표입니다.
-단순한 기능 구현을 넘어, 유지보수성과 확장성, 그리고 극한의 최적화를 달성하기 위해 MVP 아키텍처, 의존성 주입(DI), 반응형 프로그래밍, 비동기 제어 등 현대적인 소프트웨어 설계 패턴과 고급 유니티 엔지니어링 기술을 엄격하게 적용하여 개발되었습니다.
+SlimeDefense는 Unity 기반의 그리드 타워 디펜스 게임입니다.
+그리드 위에 영웅을 배치하고 웨이브를 막아 지휘관을 끝까지 지켜내는 것이 목표입니다.
+
+단기적인 기능 구현보다 **기능이 추가되거나 수정될 때 영향 범위를 좁힐 수 있는 구조**를 우선 목표로 삼았습니다.
+MVP 패턴, 의존성 주입(DI), 반응형 프로그래밍(FRP), 비동기 제어 등을 적용하여
+데이터 / 뷰 / 로직의 역할을 나누고, 클래스 간 의존을 줄이는 방향으로 작업했습니다.
 
 ---
 
 ## 주요 기술 스택 (Tech Stack)
 
-* **Game Engine:** Unity 2D - 2022.3.62f3
-* **Architecture:** MVP (Model-View-Presenter), Assembly Definition (Asmdef)
-* **Dependency Injection:** VContainer
-* **Reactive & Async:** UniRx, UniTask
-* **Optimization:** Object Pooling, Sprite Atlas
-* **Data Management:** ScriptableObject (Data-Driven Design)
+| 분류 | 사용 기술 |
+|---|---|
+| Engine | Unity 2D 2022.3.62f3 |
+| Architecture | MVP, Assembly Definition |
+| DI | VContainer |
+| Reactive / Async | UniRx, UniTask |
+| Optimization | Object Pooling, Sprite Atlas |
+| Data | ScriptableObject |
 
 ---
 
-## 핵심 아키텍처 및 최적화 (Core Architecture & Optimization)
+## 핵심 아키텍처 설계 의사결정
 
-본 프로젝트는 클래스 간의 결합도를 낮추고 데이터 흐름을 명확하게 제어하며, 앱 성능을 극대화하기 위해 아래의 설계 원칙을 따릅니다.
+### 1. MVP + VContainer로 책임과 의존성 분리
 
-1. **MVP 분리:** 모든 주요 엔티티(Hero, Enemy, Commander, Projectile)는 상태와 데이터를 갖는 `Model`, 시각적 연출과 물리 충돌을 담당하는 `View`, 그리고 둘 사이의 비즈니스 로직을 연결하는 `Presenter`로 철저히 분리되어 있습니다.
-2. **모듈화 및 단방향 의존성 (Asmdef):** 어셈블리 데피니션(Assembly Definition)을 적용하여 프로젝트를 `Core`(순수 데이터/로직), `Gameplay`, `Lobby`, `UI`, `Scopes`(DI 조립) 계층으로 완벽하게 분리했습니다. 이를 통해 스파게티 코드와 순환 참조(Circular Dependency)를 원천 차단하고, 스크립트 수정 시 컴파일 타임을 대폭 단축하여 개발 생산성을 확보했습니다.
-3. **의존성 주입 (DI):** `InGameLifetimeScope` 및 최상위 `ProjectLifetimeScope`를 진입점으로 사용하여 Config, Manager, Presenter 등을 계층별로 바인딩하고 주입합니다. 이를 통해 싱글톤 패턴의 결합도 문제를 해결하고 완벽한 수명 주기 관리를 보장합니다.
-4. **반응형 상태 동기화 (UniRx):** 체력 변동, 웨이브 진행 상태, 코인 증감 등의 핵심 데이터는 `UniRx`의 ReactiveProperty로 관리되며, UI 및 로직은 이를 구독하여 상태 변화에 즉각적으로 반응합니다.
-5. **비동기 제어와 무가비지 애니메이션 (UniTask):** 웨이브 대기, 스폰 로직, 그리고 UI 팝업 연출(Tween) 등 시간에 의존하는 모든 비동기 작업을 코루틴 대신 `UniTask`로 구현하여 가비지 컬렉션(GC) 부하를 없앴습니다. 특히 UI 애니메이션은 `CancellationToken`을 활용해 오브젝트 파괴 시 즉시 안전하게 종료되도록 설계하여 메모리 누수와 에러를 완벽하게 차단했습니다.
-6. **드로우 콜 최적화 (Sprite Atlas):** 수많은 2D 스프라이트와 UI 에셋들을 Sprite Atlas로 통합 패킹하여 단일 텍스처로 병합했습니다. 이로 인해 유니티의 배칭(Batching) 효율을 극대화하고 드로우 콜(Draw Call)을 획기적으로 줄여 모바일 디바이스에서도 쾌적한 렌더링 성능을 보장합니다.
+이전 프로젝트에서 MonoBehaviour 하나에 데이터와 UI 코드가 섞이거나, 싱글톤을 남용해 클래스 간 의존이 늘어나는 문제를 경험했습니다.
+이를 개선하기 위해 Model / View / Presenter로 역할을 나누고, VContainer를 도입해 필요한 클래스만 생성자로 주입받도록 구성했습니다.
 
----
+**Scope 단위 수명주기 관리**
 
-## 기능별 세부 시스템 설명
+VContainer의 Scope를 3단계로 나눠 생명주기와 메모리 정리 범위를 명확히 했습니다.
 
-### 1. 맵 및 그리드 상호작용 시스템 (Map & Grid System)
-전장의 상태를 관리하고 플레이어의 배치 전략을 지원합니다.
-* **GridClickDetector:** 타일맵 클릭을 감지하여 클릭한 셀 좌표와 월드 좌표를 반환합니다. 게임 시작 시 맵 전체를 스캔하여 파괴된 타일(Broken Cell) 데이터를 수집합니다.
-* **GridManager:** 2D 그리드 데이터를 Dictionary와 HashSet으로 관리합니다. 셀의 점유 상태(IsEmpty), 영웅 배치 및 제거(PlaceHero/ClearCell), 파괴된 셀 관리를 전담하는 순수 데이터 관리자입니다.
-* **GridInteractionPresenter:** 마우스 클릭 이벤트를 구독하여 셀의 상태에 따라 알맞은 행동을 처리합니다. 파괴된 칸은 수리(Repair), 빈 칸은 영웅 소환(Summon), 영웅이 존재하는 칸은 업그레이드(Upgrade) 팝업을 호출합니다.
-* **StageInitializer:** 스테이지 시작 시 지휘관을 지정된 위치에 소환하고 Presenter를 연결합니다.
-* **WaypointPath & PathDataSO:** 적의 이동 경로를 ScriptableObject 좌표 배열로 정의하여 다중 경로 확장이 가능하도록 설계되었습니다.
+- **ProjectLifetimeScope (최상위):** 씬이 바뀌어도 유지되는 전체 스테이지 데이터(StageConfig), 게임 흐름 제어(GameManagerModel, SceneFlowService)를 싱글톤으로 관리합니다.
+- **InGameLifetimeScope (전투):** 전투 씬에서만 쓰이는 적 스포너, 유닛 모델, 전투 UI 프리팹 등을 묶어, 로비로 돌아갈 때 관련 메모리가 한 번에 정리되도록 했습니다.
+- **LobbyLifetimeScope (로비):** 로비 진입 시 LobbyView 프리팹을 동적으로 생성하고 LobbyPresenter만 가볍게 연결합니다.
 
-### 2. 엔티티 시스템 (Entity System)
-아군 유닛, 적군, 방어 대상의 상태와 동작을 관리합니다.
-* **Hero (아군 유닛):** `HeroManager`를 통해 코인을 소모하여 무작위 타입으로 소환됩니다. 동일한 등급(Grade)과 타입(Type)을 가진 영웅 두 마리를 병합하여 상위 등급(Legendary까지)으로 진화시킬 수 있습니다. 주변 적을 탐지하여 투사체 발사를 지시합니다.
-* **Enemy (적군 유닛):** `EnemyRegistry`를 통한 레지스트리 패턴으로 활성화된 적을 추적합니다. 경로를 따라 이동하며, 처치될 경우 코인을 드롭하고 목적지 도달 시 지휘관에게 데미지를 입힙니다.
-* **Commander (지휘관):** 게임의 핵심 방어 대상입니다. 적 탈출 이벤트 발생 시 체력이 감소하며, 체력이 0이 되면 게임 오버를 트리거합니다.
-
-### 3. 웨이브 시스템 (Wave System)
-게임의 흐름과 난이도를 제어합니다.
-* **WaveModel:** 현재 웨이브 인덱스, 생존한 적 수, 다음 웨이브까지의 대기 시간, 게임 오버 여부를 반응형으로 관리합니다.
-* **EnemySpawner:** `UniTask` 기반의 루프를 사용하여 웨이브 대기 시간 카운트다운과 적 스폰 로직을 비동기로 처리합니다. 게임 오버 시 CancellationToken을 활용해 스폰을 즉각 중단합니다.
-* **WavePresenter:** 지휘관 사망 시 패배 처리, 마지막 웨이브의 모든 적 섬멸 시 승리 처리를 담당합니다.
-
-### 4. 전투 및 투사체 시스템 (Projectile System)
-물리 연산 최적화를 담당합니다.
-* **ProjectileManager:** 프리팹별로 `ObjectPool<ProjectileView>`를 유지하여 발사체의 동적 생성/파괴로 인한 성능 저하를 방지합니다.
-* **유도 및 관통 로직:** 영웅이 조준한 타겟을 향해 이동하며, 이동 도중 타겟이 사망하더라도 마지막 방향으로 직진하여 다른 적에게 데미지를 입힐 수 있도록 설계되었습니다.
-* **EnemyRegistry 연동:** 투사체가 EnemyView와 충돌하면 Registry를 통해 매핑된 실제 EnemyModel을 O(1) 탐색으로 찾아내 데미지를 적용합니다.
-
-### 5. 경제 시스템 (Coin System)
-전투와 성장을 연결하는 선순환 자원 루프입니다.
-* **CoinModel:** 현재 보유 코인을 ReactiveProperty로 관리합니다. 초기 자본은 StageConfig에서 설정됩니다.
-* 적 처치 시 Config에 정의된 보상만큼 즉시 코인이 증가하며, 소환/승급/수리 시 일관된 비용 차감 로직(`TrySpendCoin`)을 거칩니다. 영웅 등급별 비용은 `HeroCostHelper`를 통해 동적으로 계산됩니다.
-
-### 6. UI 시스템 (Shared UI & State Synchronization)
-* **UI 어셈블리:** 비즈니스 로직과 철저히 분리된 `SlimeDefense.UI` 모듈을 구축하여 팝업, 버튼 클릭 연출(`ProgressTweener`) 등을 UniTask 기반으로 부드럽게 렌더링합니다.
-* **GameUIView:** 커맨더 체력, 웨이브 정보, 코인, 그리드 액션 팝업, 결과 화면 등 시각적 렌더링만을 담당합니다.
-* **GameUIPresenter:** 게임 내 다양한 Model(Wave, Commander, Coin)의 상태를 UniRx로 구독하여 View의 데이터를 갱신합니다. 씬 전환 시 에러가 발생하지 않도록 철저한 Dispose 처리를 포함합니다.
-
-### 7. 데이터 주도 설계 (Data & Configuration)
-모든 밸런스 수치와 기획 데이터는 프로그래머의 스크립트 개입 없이 유니티 에디터 상에서 수정 가능하도록 설계되었습니다.
-* **StageConfig:** 초기 코인, 커맨더 설정 및 위치, 포함할 웨이브 목록 관리.
-* **WaveConfig:** 웨이브별 적 스폰 종류, 수량, 간격, 대기 시간 정의.
-* **HeroConfig / EnemyConfig / CommanderConfig:** 체력, 공격력, 사거리, 이동 속도, 투사체 매핑, 보상 등의 개별 스탯 관리.
+생성자를 보면 해당 클래스가 무엇에 의존하는지 파악할 수 있고, UI 구조가 바뀌어도 게임 로직(Model)은 건드리지 않아도 되는 구조를 만들었습니다.
 
 ---
 
-## 플레이 흐름 요약 (Game Flow)
+### 2. Assembly Definition으로 단방향 의존성 구축
 
-1. **초기화:** 게임 실행 시 `ProjectLifetimeScope`가 전역 데이터를 세팅하고, 인게임 진입 시 `InGameLifetimeScope`가 의존성을 주입하여 `StageInitializer`가 지휘관을 배치합니다.
-2. **배치 및 수리:** 플레이어는 초기 코인을 활용해 깨진 타일을 복구하거나 빈 그리드에 영웅을 소환합니다.
-3. **전투 진행:** 지정된 대기 시간 후 적 웨이브가 경로를 따라 생성됩니다. 영웅들은 자동 타겟팅으로 적을 처치합니다.
-4. **성장:** 적 처치로 획득한 코인을 사용해 영웅을 추가 소환하고, 동일 등급/타입의 영웅을 병합하여 상위 등급으로 업그레이드합니다.
-5. **결과:** 구성된 모든 웨이브의 적을 막아내면 승리하며, 방어선이 무너져 지휘관의 체력이 0이 되면 패배 화면으로 전환됩니다.
+프로젝트를 Core / Gameplay / UI / Lobby / Scopes로 나누고, asmdef로 각 모듈이 참조할 수 있는 방향을 제한했습니다.
+
+```
+[Scopes]  →  [Gameplay] [Lobby] [UI]  →  [Core]
+```
+
+- 하위 모듈이 상위 모듈을 직접 참조하지 않도록 제한하여, 기능을 추가할 때 영향 범위를 파악하기 쉬워졌습니다.
+- 변경된 모듈만 재컴파일하기 때문에 전체 컴파일 시간이 줄었습니다.
+- Model이나 Config에서 View를 직접 참조하던 코드는 GameObject로 디커플링했습니다.
+
+---
+
+### 3. UniRx를 이용한 반응형 상태 동기화
+
+체력, 코인, 웨이브 상태를 Update에서 폴링하면 조건문이 늘고 UI 갱신 시점이 코드 곳곳으로 흩어지는 문제가 있습니다.
+핵심 상태를 ReactiveProperty로 선언하고, Presenter가 구독하여 변화가 생겼을 때만 UI를 갱신하도록 구성했습니다.
+
+```csharp
+// Presenter에서의 구독 예시
+_model.CurrentHp
+    .Subscribe(hp => _view.UpdateHpBar(hp))
+    .AddTo(_disposables);
+```
+
+- Model은 View의 존재를 알지 못하고 순수 로직에만 집중합니다.
+- GameUIPresenter에서 Observable.CombineLatest, Where 등을 활용해 다중 데이터 변화를 감지하고 UI를 갱신했습니다.
+- 오브젝트가 파괴될 때 CompositeDisposable을 일괄 해제해 구독이 남아있지 않도록 처리했습니다.
+
+---
+
+### 4. UniTask 기반 비동기 제어
+
+웨이브 대기, 적 스폰, UI 연출처럼 시간이 걸리는 로직은 씬 전환과 충돌하기 쉽습니다.
+Unity의 기존 Coroutine은 실행마다 GC를 생성하는 문제도 있었습니다.
+
+비동기 로직은 UniTask를 주로 사용했고, CancellationToken으로 종료 조건을 명시해 오브젝트가 파괴된 뒤에도 작업이 계속 도는 상황을 방지했습니다.
+
+**웨이브 제어 (EnemySpawner)**
+
+```csharp
+async UniTaskVoid WaveRoutineAsync(CancellationToken token)
+{
+    try
+    {
+        foreach (var wave in 총_웨이브_목록)
+        {
+            while (대기_시간_남음)
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
+                // 카운트다운 UI 갱신
+            }
+            for (int i = 0; i < 이번_웨이브_스폰_수; i++)
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(스폰_간격), cancellationToken: token);
+                // 적 오브젝트 스폰
+            }
+            await UniTask.WaitUntil(() => 모든_적_사망 || 게임오버, cancellationToken: token);
+        }
+    }
+    catch (OperationCanceledException)
+    {
+        // 씬 전환 또는 게임 재시작 시 안전하게 루프 종료
+    }
+}
+```
+
+**애니메이션 최적화 (ProgressTweener)**
+
+DOTween 대신 UniTask 기반의 간단한 트위너를 직접 작성했습니다. 기능은 단순하지만 GC 부하를 줄이는 데 목적이 있었습니다.
+
+---
+
+### 5. 코어 기반 유틸리티 시스템
+
+**Save System (씬 로드 타이밍 문제 대응)**
+
+JSON 직렬화 기반의 저장 시스템을 구현했습니다.
+세이브 데이터를 불러올 때 씬이 완전히 로드되기 전에 Player 오브젝트에 접근하면 null 참조가 발생하는 문제가 있었습니다.
+SceneManager.sceneLoaded 이벤트를 구독하고, 콜백 내에서 데이터를 주입한 뒤 즉시 구독을 해제하는 방식으로 해결했습니다.
+
+```csharp
+void ApplySaveDataToGame(SaveData data)
+{
+    UnityAction<Scene, LoadSceneMode> onLoaded = null;
+    onLoaded = (scene, mode) =>
+    {
+        ApplyPlayerData(data);
+        FindPlayer();
+        SceneManager.sceneLoaded -= onLoaded; // 1회 실행 후 해제
+    };
+    SceneManager.sceneLoaded += onLoaded;
+    SceneLoadManager.Instance.LoadMainScene();
+}
+```
+
+**Table Manager (에디터 자동 등록)**
+
+테이블 추가 시마다 인스펙터에서 수동으로 등록해야 하는 번거로움이 있었습니다.
+에디터에서 지정 경로를 탐색해 리스트를 자동으로 채우는 기능을 만들었고, 런타임에는 Type을 키로 딕셔너리에 캐싱해 조회 시 리스트를 처음부터 순회하지 않도록 했습니다.
+
+```csharp
+// 에디터 자동 등록 (의사 코드)
+public void AutoAssignTables()
+{
+    tableList.Clear();
+    var assets = FindAllScriptableObjects("Assets/Tables/");
+    foreach (var asset in assets)
+    {
+        if (asset is ITable) tableList.Add(asset);
+    }
+}
+```
+
+**UI Framework (Stack 기반 팝업 관리)**
+
+팝업이 겹쳐 있을 때 Cancel 입력이 가장 위 UI만 닫도록, Stack 구조를 적용했습니다.
+씬 전환 시에는 스택과 딕셔너리를 모두 초기화하고 새 씬의 UIRoot를 다시 스캔합니다.
+
+---
+
+### 6. 전투 연산 및 렌더링 최적화
+
+**Enemy Registry 기반 전투 매핑**
+
+EnemyModel과 EnemyView를 양방향 Dictionary로 등록하여, 충돌 발생 시 GetComponent 탐색 없이 즉시 대상 모델을 찾을 수 있도록 구성했습니다.
+
+**Sprite Atlas와 렌더링 최적화**
+
+에너미, 로비 UI, 인게임 UI 등 성격이 다른 에셋을 별도 Atlas로 분리하여 배칭 효율을 높였습니다.
+아틀라스는 2의 배수(POT) 규격 및 ASTC 4x4 포맷으로 압축하고 타겟 프레임을 60으로 제한하여, 모바일 기기의 발열과 메모리 낭비를 줄였습니다.
+
+동일한 부하 테스트 환경(화면 내 유닛·투사체 약 50개 기준) 프로파일링 결과:
+
+| 항목 | 적용 전 | 적용 후 | 변화 |
+|---|---|---|---|
+| SetPass Calls | 57 | 13 | -77% |
+| Batches | 60 | 10 | -83% |
+
+**Sub-Canvas 분리 (UI 렌더링 스파이크 방지)**
+
+화면 레이아웃을 정적 캔버스와 동적 캔버스로 분리해 Rebuild 연산을 줄였습니다.
+팝업 창은 SetActive 대신 Canvas.enabled를 조작하여 오버드로우와 프레임 끊김 현상을 방지했습니다.
+
+---
+
+## 기능별 세부 시스템
+
+### 맵 및 그리드 상호작용 시스템
+
+- **GridClickDetector:** 타일맵 클릭을 감지하여 셀 좌표와 월드 좌표를 반환합니다. 게임 시작 시 맵 전체를 스캔하여 파괴된 타일 데이터를 수집합니다.
+- **GridManager:** 2D 그리드 데이터를 Dictionary와 HashSet으로 관리합니다. 셀의 점유 상태, 영웅 배치/제거, 파괴된 셀 관리를 전담하는 순수 데이터 클래스입니다.
+- **GridInteractionPresenter:** 마우스 클릭 이벤트를 구독하여 셀 상태에 따라 수리(Repair), 영웅 소환(Summon), 업그레이드 팝업을 호출합니다.
+- **WaypointPath & PathDataSO:** 적의 이동 경로를 ScriptableObject 좌표 배열로 정의하여 다중 경로 확장이 가능하도록 설계했습니다.
+
+### 엔티티 시스템
+
+- **Hero:** HeroManager를 통해 코인을 소모하여 무작위 타입으로 소환합니다. 동일 등급·타입의 영웅 두 마리를 병합하여 상위 등급(Legendary까지)으로 진화시킬 수 있습니다. 주변 적을 탐지하여 투사체 발사를 지시합니다.
+- **Enemy:** EnemyRegistry의 레지스트리 패턴으로 활성화된 적을 추적합니다. 경로를 따라 이동하며, 처치 시 코인을 드롭하고 목적지 도달 시 지휘관에게 데미지를 입힙니다.
+- **Commander:** 적 탈출 이벤트 발생 시 체력이 감소하며, 체력이 0이 되면 게임 오버를 트리거합니다.
+
+### 웨이브 시스템
+
+- **WaveModel:** 현재 웨이브 인덱스, 생존 적 수, 대기 시간, 게임 오버 여부를 ReactiveProperty로 관리합니다.
+- **EnemySpawner:** UniTask 기반 루프로 웨이브 카운트다운과 적 스폰을 비동기로 처리합니다. CancellationToken으로 게임 오버 시 즉시 중단합니다.
+- **WavePresenter:** 지휘관 사망 시 패배 처리, 마지막 웨이브 섬멸 시 승리 처리를 담당합니다.
+
+### 투사체 시스템
+
+- **ProjectileManager:** 프리팹별로 ObjectPool을 유지하여 발사체 동적 생성·파괴로 인한 GC 부하를 줄입니다.
+- 영웅이 조준한 타겟을 향해 이동하며, 이동 도중 타겟이 사망하더라도 마지막 방향으로 직진하여 다른 적에게도 데미지를 줄 수 있습니다.
+- 투사체가 EnemyView와 충돌하면 EnemyRegistry를 통해 매핑된 EnemyModel을 O(1)로 찾아 데미지를 적용합니다.
+
+### 경제 시스템
+
+- **CoinModel:** 현재 보유 코인을 ReactiveProperty로 관리합니다. 초기 자본은 StageConfig에서 설정됩니다.
+- 적 처치 시 Config에 정의된 보상만큼 코인이 증가하며, 소환·승급·수리 시 TrySpendCoin을 통해 차감합니다. 영웅 등급별 비용은 HeroCostHelper에서 계산합니다.
+
+### 데이터 주도 설계
+
+밸런스 수치와 기획 데이터는 스크립트 수정 없이 인스펙터에서 조정할 수 있도록 ScriptableObject로 관리합니다.
+
+- **StageConfig:** 초기 코인, 지휘관 설정 및 위치, 웨이브 목록
+- **WaveConfig:** 웨이브별 적 스폰 종류, 수량, 간격, 대기 시간
+- **HeroConfig / EnemyConfig / CommanderConfig:** 체력, 공격력, 사거리, 이동 속도, 투사체 매핑, 보상 등 개별 스탯
+
+---
+
+## 플레이 흐름
+
+1. **초기화:** ProjectLifetimeScope가 전역 데이터를 세팅하고, 인게임 진입 시 InGameLifetimeScope가 의존성을 주입하여 StageInitializer가 지휘관을 배치합니다.
+2. **배치 및 수리:** 초기 코인으로 깨진 타일을 복구하거나 빈 그리드에 영웅을 소환합니다.
+3. **전투 진행:** 대기 시간 후 적 웨이브가 경로를 따라 생성됩니다. 영웅들은 자동 타겟팅으로 적을 처치합니다.
+4. **성장:** 적 처치로 코인을 획득하고, 동일 등급·타입의 영웅을 병합하여 상위 등급으로 업그레이드합니다.
+5. **결과:** 모든 웨이브를 막아내면 승리, 지휘관 체력이 0이 되면 패배 화면으로 전환됩니다.
